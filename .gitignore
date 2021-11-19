@@ -1,7 +1,6 @@
 .secrets.json
-lib64
-
-/bin/
-/include/
-/lib/
-/share/
+/lib64
+/bin
+/include
+/lib
+/share
