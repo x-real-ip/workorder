@@ -40,13 +40,13 @@ source workorder/bin/activate
 
 ```
 
-install packages
+install package
 
 ```
 pip3 install selenium
 ```
 
-## 2. install Google Chrome
+## 2. install Google Chrome 
 
 ```
 wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
