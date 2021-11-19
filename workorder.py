@@ -33,6 +33,6 @@ if password == "password" or password == "":
 
 ## start selenium
 from selenium import webdriver
-
-browser = webdriver.Firefox()
-browser.get("https://google.com")
+from selenium.webdriver.common.keys import Keys
+driver = webdriver.Chrome()
+driver.get("http://www.python.org")
