@@ -19,7 +19,7 @@ try:
     objects_secrets_json = json.load(secrets_json)
     secrets_json.close()
 except FileNotFoundError:
-  print(secrets_json_filename , "not exists in", dirname, "directory")
+  sys.exit(secrets_json_filename , "not exists in", dirname, "directory")
 
 # set username and password variables
 username = objects_secrets_json['username']
@@ -33,7 +33,6 @@ if password == "password" or password == "":
 
 ## start selenium
 from selenium import webdriver
-
 
 browser = webdriver.Firefox()
 browser.get("https://google.com")
