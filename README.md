@@ -40,18 +40,30 @@ source workorder/bin/activate
 
 ```
 
-install package
+## 2. install selenium python package
 
 ```
 pip3 install selenium
 ```
 
-## 2. install chromium webdriver
-
+## 3. install google-chrome
 ```
-sudo apt-get install chromium-chromedriver
-```
-
-```
+sudo apt update
+wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
 sudo apt install ./google-chrome-stable_current_amd64.deb
 ```
+
+wget https://chromedriver.storage.googleapis.com/96.0.4664.45/chromedriver_linux64.zip
+unzip chromedriver_linux64.zip
+sudo mv chromedriver /usr/bin/chromedriver
+sudo chown root:root /usr/bin/chromedriver
+sudo chmod +x /usr/bin/chromedriver
+```
+
+## 4. install chromium webdriver
+
+```
+sudo apt-get update -y
+sudo apt-get install -y chromium-chromedriver
+```
+

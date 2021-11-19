@@ -5,6 +5,7 @@
 import json
 import os
 import sys
+import time
 
 # variables
 secrets_json_filename = (".secrets.json")
@@ -22,8 +23,9 @@ except FileNotFoundError:
   sys.exit(secrets_json_filename , "not exists in", dirname, "directory")
 
 # set username and password variables
-username = objects_secrets_json['username']
-password = objects_secrets_json['password']
+username = objects_secrets_json["username"]
+password = objects_secrets_json["password"]
+target_url = objects_secrets_json["target_url"]
 
 # check if default values in secrets.json is changed
 if username == "username" or username == "":
@@ -33,6 +35,14 @@ if password == "password" or password == "":
 
 ## start selenium
 from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.keys import Keys
-driver = webdriver.Chrome()
-driver.get("http://www.python.org")
+from selenium.webdriver.common.by import By
+
+options = Options()
+options.headless = False
+driver = webdriver.Chrome(options=options)
+
+driver.get(target_url)
+l = driver.find_element_by_tag_name("input")
+l.send_keys("Selenium")
