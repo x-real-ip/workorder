@@ -19,27 +19,6 @@ install pip
 sudo apt install -y python3-pip
 ```
 
-setting Up a Virtual Environment
-
-```
-sudo apt install -y python3-venv
-mkdir environments
-cd environments
-```
-
-create an environment
-
-```
-python3 -m venv workorder
-```
-
-use the environment
-
-```
-source workorder/bin/activate
-
-```
-
 ## 2. install selenium python package
 
 ```
