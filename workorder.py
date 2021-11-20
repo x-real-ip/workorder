@@ -38,11 +38,24 @@ from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 
 options = Options()
 options.headless = False
 driver = webdriver.Chrome(options=options)
 
+## open webpage
 driver.get(target_url)
-l = driver.find_element_by_tag_name("input")
-l.send_keys("Selenium")
+
+## enter username
+username_field = driver.find_element(By.TAG_NAME, 'input')
+username_field.send_keys(username)
+
+## next
+username_field = driver.find_element(By.TAG_NAME, 'button').click()
+#driver.find_element(By.XPATH, '//*[@id="app"]/div/div[2]/div[2]/div[2]/button').click()
+
+## enter password
+password_field = driver.find_element(By.TAG_NAME, 'input')
+password_field.send_keys(password)
