@@ -1,3 +1,4 @@
+*.log
 .secrets.json
 /lib64
 /bin
