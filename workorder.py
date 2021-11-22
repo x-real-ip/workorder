@@ -4,30 +4,42 @@
 
 import json
 import os
+import logging
 import sys
 import time
-import logging
 from datetime import date
 from datetime import timedelta
 
 ## logging
-logging.basicConfig(format='%(levelname)s %(asctime)s %(message)s', filename='workorder.log', level=logging.DEBUG)
+## create logger with name
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.DEBUG)
+## file handler
+file_handler = logging.FileHandler("workorder.log")
+file_handler.setLevel(logging.DEBUG)
+## consol handler
+consol_handler = logging.StreamHandler()
+consol_handler.setLevel(logging.ERROR)
+## formatter and add it to the handlers
+formatter = logging.Formatter("%(levelname)s - %(asctime)s - %(name)s - %(funcName)s:%(lineno)d - %(message)s")
+file_handler.setFormatter(formatter)
+consol_handler.setFormatter(formatter)
+## add handlers to logger
+logger.addHandler(file_handler)
+logger.addHandler(consol_handler)
 
-logging.info("script started")
+logger.info("started script: %s", os.path.abspath(__file__))
 
 ## variables
 secrets_json_filename = (".secrets.json")
+secrets_json_path = os.path.abspath(secrets_json_filename)
 
+logger.debug("using secrets from file: %s", secrets_json_path)
 
 ## datetime
 today = date.today().strftime("%b " "%d")
 yesterday = (date.today() - timedelta(days=1)).strftime("%b " "%d")
-
-
-
-# set path variables
-dirname = os.path.dirname(__file__)
-secrets_json_path = os.path.join(dirname, secrets_json_filename)
+# logger.debug("using today's date: %s", today, "and using yesterday's date: %s", yesterday)
 
 ## open external json secrets file to get credentials
 try:
@@ -61,7 +73,6 @@ from selenium.webdriver.support import expected_conditions as EC
 options = Options()
 options.headless = False
 driver = webdriver.Chrome(options=options)
-delay = 3
 
 ## open webpage
 driver.get(url)
@@ -84,10 +95,10 @@ login_button.click()
 
 ## workorder
 try:
-    order = WebDriverWait(driver, delay).until(EC.presence_of_element_located((By.XPATH, "//*[contains(text(),'" + today + "')]")))
+    order = WebDriverWait(driver, 3).until(EC.presence_of_element_located((By.XPATH, "//*[contains(text(),'" + today + "')]")))
     print("workorder is found with text", '"' + (order.text) + '"')
     order.click()
 except TimeoutException: 
     print("no workorder is found with text", '"' + (order.text) + '"')
 
-logging.info("script finished")
+logger.info("script finished")
