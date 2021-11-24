@@ -93,12 +93,17 @@ password_field.send_keys(password)
 login_button = driver.find_element(By.XPATH, '//*[@id="app"]/div/div[2]/div[1]/div[2]/button[2]')
 login_button.click()
 
-## workorder
+## find and open workorder
 try:
     order = WebDriverWait(driver, 3).until(EC.presence_of_element_located((By.XPATH, "//div[h6[contains(text(),'dienst')] and p[contains(text(),'{}')]]".format(today))))
-    print("workorder is found with text", '"' + (order.text) + '"')
+    logger.info("workorder is found with text", '"' + (order.text) + '"')
     order.click()
 except TimeoutException:
     print("no workorder is found with text", '"' + (order.text) + '"')
+
+## enter start time
+start_time_hours = WebDriverWait(driver, 5).until(EC.presence_of_element_located((By.XPATH, '//*[@id="container"]/div[2]/div/div/fieldset/div[2]/div[1]/span/input[1]')))
+start_time_hours.send_keys(Keys.BACKSPACE)
+start_time_hours.send_keys("22")
 
 logger.info("script finished")
