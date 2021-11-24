@@ -95,10 +95,11 @@ login_button.click()
 
 ## workorder
 try:
-    order = WebDriverWait(driver, 3).until(EC.presence_of_element_located((By.XPATH, "//*[contains(text(),'" + today + "')]")))
+    order = WebDriverWait(driver, 3).until(EC.presence_of_element_located((By.XPATH, "//div/h6[contains(text(),'dienst')]")))
+    # order = WebDriverWait(driver, 3).until(EC.presence_of_element_located((By.XPATH, "//p[contains(text(),'{}')]".format(today))))
     print("workorder is found with text", '"' + (order.text) + '"')
     order.click()
-except TimeoutException: 
+except TimeoutException:
     print("no workorder is found with text", '"' + (order.text) + '"')
 
 logger.info("script finished")
