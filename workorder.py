@@ -11,56 +11,51 @@ from datetime import date
 from datetime import timedelta
 
 ## logging
-## create logger with name
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
-## file handler
 file_handler = logging.FileHandler("workorder.log")
-file_handler.setLevel(logging.DEBUG)
-## consol handler
-consol_handler = logging.StreamHandler()
-consol_handler.setLevel(logging.ERROR)
-## formatter and add it to the handlers
 formatter = logging.Formatter("%(levelname)s - %(asctime)s - %(name)s - %(funcName)s:%(lineno)d - %(message)s")
 file_handler.setFormatter(formatter)
-consol_handler.setFormatter(formatter)
-## add handlers to logger
 logger.addHandler(file_handler)
-logger.addHandler(consol_handler)
 
 logger.info("started script: %s", os.path.abspath(__file__))
-
-## variables
-secrets_json_filename = (".secrets.json")
-secrets_json_path = os.path.abspath(secrets_json_filename)
-
-logger.debug("using secrets from file: %s", secrets_json_path)
 
 ## datetime
 today = date.today().strftime("%b " "%d")
 yesterday = (date.today() - timedelta(days=1)).strftime("%b " "%d")
-# logger.debug("using today's date: %s", today, "and using yesterday's date: %s", yesterday)
+logger.debug(f"variable \"today\" is: {today}")
+logger.debug(f"variable \"yesterday\" is: {yesterday}")
 
 ## open external json secrets file to get credentials
+secrets_json_filename = (".secrets.json")
+secrets_json_path = os.path.abspath(secrets_json_filename)
+logger.debug("using secrets from file: %s", secrets_json_path)
+
 try:
   with open(secrets_json_path) as secrets_json:
     objects_secrets_json = json.load(secrets_json)
     secrets_json.close()
-except FileNotFoundError:
-  sys.exit(secrets_json_filename , "not exists in", dirname, "directory")
+except FileNotFoundError as e:
+  logger.error(e)
 
 ## take objects from secrets.json as variables
 username = objects_secrets_json["username"]
 password = objects_secrets_json["password"]
 url = objects_secrets_json["url"]
+logger.debug("variable \"password\" wil not be showed in this log")
+logger.debug(f"variable \"username\" is set to {username}")
+logger.debug(f"variable \"url\" is set to: {url}")
 
 ## check if default values in secrets.json is changed
 if username == "username" or username == "":
-  sys.exit("please enter a valid username in", secrets_json_filename)
+  logger.error(f"please enter a valid username in {secrets_json_filename}")
+  sys.exit()
 if password == "password" or password == "":
-  sys.exit("please enter a valid password in", secrets_json_filename)
+  logger.error(f"please enter a valid password in {secrets_json_filename}")
+  sys.exit()
 if url == "url" or url == "":
-  sys.exit("please enter a valid password in", secrets_json_filename)
+  logger.error(f"please enter a valid url in {secrets_json_filename}")
+  sys.exit()
 
 ## start selenium
 from selenium import webdriver
@@ -94,16 +89,42 @@ login_button = driver.find_element(By.XPATH, '//*[@id="app"]/div/div[2]/div[1]/d
 login_button.click()
 
 ## find and open workorder
-try:
-    order = WebDriverWait(driver, 3).until(EC.presence_of_element_located((By.XPATH, "//div[h6[contains(text(),'dienst')] and p[contains(text(),'{}')]]".format(today))))
-    logger.info("workorder is found with text", '"' + (order.text) + '"')
-    order.click()
-except TimeoutException:
-    print("no workorder is found with text", '"' + (order.text) + '"')
+def open_order():
+    try:
+        order = WebDriverWait(driver, 3).until(EC.presence_of_element_located((By.XPATH, "//div[h6[contains(text(),'dienst')] and p[contains(text(),'{}')]]".format(today))))
+        order.click()
+        text = order.text.replace("\n", " ")
+        logger.info(f"workorder \"{text}\" is selected")
+    except Exception as e:
+        logger.error(e)
+
+open_order()
+
+## wait for order container
+WebDriverWait(driver, 5).until(EC.presence_of_element_located((By.XPATH, '//input[@class="time-input hours"]')))
 
 ## enter start time
-start_time_hours = WebDriverWait(driver, 5).until(EC.presence_of_element_located((By.XPATH, '//*[@id="container"]/div[2]/div/div/fieldset/div[2]/div[1]/span/input[1]')))
-start_time_hours.send_keys(Keys.BACKSPACE)
-start_time_hours.send_keys("22")
+start_hours = driver.find_element(By.XPATH, '//fieldset/div[2]/div[1]/span/input[1][@class="time-input hours"]')
+start_hours.send_keys(Keys.BACKSPACE)
+start_hours.send_keys("14")
+start_minutes = driver.find_element(By.XPATH, '//input[2][@class="time-input minutes"]')
+start_minutes.send_keys("45")
+# logger.info(f"start time {start_hours}:{start_minutes} has filled in")
 
+## enter end time
+end_hours = driver.find_element(By.XPATH, "//label[contains(text(),'End')]/following-sibling::span/input[@class='time-input hours']")
+end_hours.send_keys(Keys.BACKSPACE)
+end_hours.send_keys("23")
+end_minutes = driver.find_element(By.XPATH, "//label[contains(text(),'End')]/following-sibling::span/input[@class='time-input minutes']")
+end_minutes.send_keys("45")
+# logger.info(f"end time {end_hours}:{end_minutes} has filled in")
+
+## send order
+send = driver.find_element(By.XPATH, "//button[contains(text(),'Send')]")
+send.click()
+
+time.sleep(4)
+
+# quit browser
+driver.quit()
 logger.info("script finished")
