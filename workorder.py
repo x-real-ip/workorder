@@ -42,7 +42,7 @@ except FileNotFoundError as e:
 username = objects_secrets_json["username"]
 password = objects_secrets_json["password"]
 url = objects_secrets_json["url"]
-logger.debug("variable \"password\" wil not be showed in this log")
+logger.debug("variable \"password\" wil not be exposed in this log")
 logger.debug(f"variable \"username\" is set to {username}")
 logger.debug(f"variable \"url\" is set to: {url}")
 
@@ -63,7 +63,9 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.support import expected_conditions as EC
+
 
 options = Options()
 options.headless = False
@@ -91,12 +93,15 @@ login_button.click()
 ## find and open workorder
 def open_order():
     try:
-        order = WebDriverWait(driver, 3).until(EC.presence_of_element_located((By.XPATH, "//div[h6[contains(text(),'dienst')] and p[contains(text(),'{}')]]".format(today))))
+        order = WebDriverWait(driver, 3).until(EC.presence_of_element_located((By.XPATH, "//div[h6[contains(text(),'Operator')] or h6[contains(text(),'dienst')] and p[contains(text(),'{}')]]".format(today))))
+
+        # order = WebDriverWait(driver, 3).until(EC.presence_of_element_located((By.XPATH, "//div[h6[contains(text(),'dienst')] and p[contains(text(),'{}')]]".format(today))))
         order.click()
         text = order.text.replace("\n", " ")
-        logger.info(f"workorder \"{text}\" is selected")
+        logger.info(f"workorder \"{text}\" selected")
     except Exception as e:
         logger.error(e)
+        sys.exit()
 
 open_order()
 
@@ -114,17 +119,20 @@ start_minutes.send_keys("45")
 ## enter end time
 end_hours = driver.find_element(By.XPATH, "//label[contains(text(),'End')]/following-sibling::span/input[@class='time-input hours']")
 end_hours.send_keys(Keys.BACKSPACE)
-end_hours.send_keys("23")
+end_hours.send_keys("00")
 end_minutes = driver.find_element(By.XPATH, "//label[contains(text(),'End')]/following-sibling::span/input[@class='time-input minutes']")
-end_minutes.send_keys("45")
+end_minutes.send_keys("00")
 # logger.info(f"end time {end_hours}:{end_minutes} has filled in")
 
 ## send order
-send = driver.find_element(By.XPATH, "//button[contains(text(),'Send')]")
-send.click()
+send_button = driver.find_element(By.XPATH, "//*[contains(text(),'Send')]")
+
+time.sleep(4)
+# send_button.click
 
 time.sleep(4)
 
 # quit browser
-driver.quit()
+# driver.quit()
 logger.info("script finished")
+
