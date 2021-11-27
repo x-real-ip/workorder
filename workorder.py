@@ -92,16 +92,14 @@ login_button.click()
 
 ## find and open workorder
 def open_order():
-    try:
-        order = WebDriverWait(driver, 3).until(EC.presence_of_element_located((By.XPATH, "//div[h6[contains(text(),'Operator')] or h6[contains(text(),'dienst')] and p[contains(text(),'{}')]]".format(yesterday))))
-
-        # order = WebDriverWait(driver, 3).until(EC.presence_of_element_located((By.XPATH, "//div[h6[contains(text(),'dienst')] and p[contains(text(),'{}')]]".format(today))))
-        order.click()
-        text = order.text.replace("\n", " ")
-        logger.info(f"workorder \"{text}\" selected")
-    except Exception as e:
-        logger.error(e)
-        sys.exit()
+  try:
+      order = WebDriverWait(driver, 3).until(EC.presence_of_element_located((By.XPATH, "//div[h6[contains(text(),'Operator')] or h6[contains(text(),'dienst')] and p[contains(text(),'{}')]]".format(yesterday))))
+      order.click()
+      text = order.text.replace("\n", " ")
+      logger.info(f"workorder \"{text}\" selected")
+  except Exception as e:
+      logger.error(e)
+      sys.exit()
 
 open_order()
 
@@ -114,7 +112,7 @@ start_hours.send_keys(Keys.BACKSPACE)
 start_hours.send_keys("14")
 start_minutes = driver.find_element(By.XPATH, '//input[2][@class="time-input minutes"]')
 start_minutes.send_keys("45")
-# logger.info(f"start time {start_hours}:{start_minutes} has filled in")
+logger.info(f"start time {start_hours}:{start_minutes} has filled in")
 
 ## enter end time
 end_hours = driver.find_element(By.XPATH, "//label[contains(text(),'End')]/following-sibling::span/input[@class='time-input hours']")
@@ -122,16 +120,26 @@ end_hours.send_keys(Keys.BACKSPACE)
 end_hours.send_keys("00")
 end_minutes = driver.find_element(By.XPATH, "//label[contains(text(),'End')]/following-sibling::span/input[@class='time-input minutes']")
 end_minutes.send_keys("00")
-# logger.info(f"end time {end_hours}:{end_minutes} has filled in")
+logger.info(f"end time {end_hours}:{end_minutes} has filled in")
 
-## send order
-# send_button = driver.find_element(By.XPATH, "//*[contains(text(),'Send')]")
+## tab to the send button because the send button cannot be found with selenium
+actions = ActionChains(driver)
+actions.send_keys(Keys.TAB * 7)
+## enter the send button because .click() cant be execute with selenium since the button cant be found based on XPATH, TAG or TEXT
+actions.send_keys(Keys.ENTER)
+actions.perform()
 
-button = driver.find_element(By.TAG_NAME, 'button')
-button.click()
+## close
+try:
+  close_button = WebDriverWait(driver, 5).until(EC.presence_of_element_located((By.XPATH, '//*[@id="container"]/div[2]/fieldset/div/button')))
+  close_button.click()
+except Exception:
+  logger.error("workorder was not closed properly and it probably was not sent")
+  sys.exit()
+else:
+  logger.info("workorder completed successfully")
 
-
-# quit browser
-# driver.quit()
+## quit browser
+driver.quit()
 logger.info("script finished")
 
