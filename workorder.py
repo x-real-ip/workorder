@@ -66,7 +66,6 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.support import expected_conditions as EC
 
-
 options = Options()
 options.headless = False
 driver = webdriver.Chrome(options=options)
@@ -125,11 +124,12 @@ logger.info(f"end time {end_hours}:{end_minutes} has filled in")
 ## tab to the send button because the send button cannot be found with selenium
 actions = ActionChains(driver)
 actions.send_keys(Keys.TAB * 7)
-## enter the send button because .click() cant be execute with selenium since the button cant be found based on XPATH, TAG or TEXT
+## enter the submit button because .click() cannot be executed with selenium the reason for this is because the button cannot be found based on XPATH, TAG or TEXT
 actions.send_keys(Keys.ENTER)
+## perform the above actions
 actions.perform()
 
-## close
+## close workorder after send
 try:
   close_button = WebDriverWait(driver, 5).until(EC.presence_of_element_located((By.XPATH, '//*[@id="container"]/div[2]/fieldset/div/button')))
   close_button.click()
