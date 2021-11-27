@@ -93,7 +93,7 @@ login_button.click()
 ## find and open workorder
 def open_order():
     try:
-        order = WebDriverWait(driver, 3).until(EC.presence_of_element_located((By.XPATH, "//div[h6[contains(text(),'Operator')] or h6[contains(text(),'dienst')] and p[contains(text(),'{}')]]".format(today))))
+        order = WebDriverWait(driver, 3).until(EC.presence_of_element_located((By.XPATH, "//div[h6[contains(text(),'Operator')] or h6[contains(text(),'dienst')] and p[contains(text(),'{}')]]".format(yesterday))))
 
         # order = WebDriverWait(driver, 3).until(EC.presence_of_element_located((By.XPATH, "//div[h6[contains(text(),'dienst')] and p[contains(text(),'{}')]]".format(today))))
         order.click()
@@ -125,12 +125,11 @@ end_minutes.send_keys("00")
 # logger.info(f"end time {end_hours}:{end_minutes} has filled in")
 
 ## send order
-send_button = driver.find_element(By.XPATH, "//*[contains(text(),'Send')]")
+# send_button = driver.find_element(By.XPATH, "//*[contains(text(),'Send')]")
 
-time.sleep(4)
-# send_button.click
+button = driver.find_element(By.TAG_NAME, 'button')
+button.click()
 
-time.sleep(4)
 
 # quit browser
 # driver.quit()
