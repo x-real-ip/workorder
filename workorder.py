@@ -142,4 +142,3 @@ else:
 ## quit browser
 driver.quit()
 logger.info("script finished")
-
