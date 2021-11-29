@@ -1,7 +1,5 @@
 {
-    "start_date":"Nov 24",
-    "start_hours":15,
-    "start_minutes":00,
-    "end_hours":23,
-    "end_minutes":30
+    "date":"Nov 29",
+    "start_time":"15.23",
+    "end_time":"23:46"
 }
