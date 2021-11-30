@@ -2,6 +2,8 @@
 # script writtin by Coen Stam
 # version 2021.11.1
 
+import timecalc
+
 import json
 import os
 import logging
@@ -57,6 +59,13 @@ if url == "url" or url == "":
   logger.error(f"please enter a valid url in {secrets_json_filename}")
   sys.exit()
 
+## inputvalues
+start_time = "14.00"
+end_time = "23.30"
+
+timecalc.starttime(start_time)
+timecalc.endtime(end_time)
+
 ## start selenium
 from selenium import webdriver
 from selenium.webdriver.common.by import By
@@ -92,7 +101,7 @@ login_button.click()
 ## find and open workorder
 def open_order():
     try:
-        order = WebDriverWait(driver, 3).until(EC.presence_of_element_located((By.XPATH, "//div[h6[contains(text(),'Operator')] or h6[contains(text(),'dienst')] and p[contains(text(),'{}')]]".format(yesterday))))
+        order = WebDriverWait(driver, 3).until(EC.presence_of_element_located((By.XPATH, "//div[h6[contains(text(),'Operator')] or h6[contains(text(),'dienst')] and p[contains(text(),'{}')]]".format(today))))
         order.click()
         text = order.text.replace("\n", " ")
         logger.info(f"workorder \"{text}\" selected")
@@ -108,17 +117,17 @@ WebDriverWait(driver, 5).until(EC.presence_of_element_located((By.XPATH, '//inpu
 ## enter start time
 start_hours = driver.find_element(By.XPATH, '//fieldset/div[2]/div[1]/span/input[1][@class="time-input hours"]')
 start_hours.send_keys(Keys.BACKSPACE)
-start_hours.send_keys("15")
+start_hours.send_keys(timecalc.starttime.hours)
 start_minutes = driver.find_element(By.XPATH, '//input[2][@class="time-input minutes"]')
-start_minutes.send_keys("00")
+start_minutes.send_keys(timecalc.starttime.minut)
 logger.info(f"start time {start_hours}:{start_minutes} has filled in")
 
 ## enter end time
 end_hours = driver.find_element(By.XPATH, "//label[contains(text(),'End')]/following-sibling::span/input[@class='time-input hours']")
 end_hours.send_keys(Keys.BACKSPACE)
-end_hours.send_keys("23")
+end_hours.send_keys(timecalc.endtime.hours)
 end_minutes = driver.find_element(By.XPATH, "//label[contains(text(),'End')]/following-sibling::span/input[@class='time-input minutes']")
-end_minutes.send_keys("15")
+end_minutes.send_keys(timecalc.endtime.minut)
 logger.info(f"end time {end_hours}:{end_minutes} has filled in")
 
 ## tab to the send button because the send button cannot be found with selenium
@@ -131,7 +140,7 @@ actions.perform()
 
 ## close workorder after send
 try:
-  close_button = WebDriverWait(driver, 5).until(EC.presence_of_element_located((By.XPATH, '//*[@id="container"]/div[2]/fieldset/div/button')))
+  close_button = WebDriverWait(driver, 3).until(EC.presence_of_element_located((By.XPATH, "//button[class='button medium primary icon-padding-right']")))
   close_button.click()
 except Exception:
   logger.error("workorder was not closed properly and it probably was not sent")
