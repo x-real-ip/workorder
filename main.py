@@ -1,32 +1,34 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # script writtin by Coen Stam
 # version 2021.11.1
-
-import timecalc
 
 import json
 import os
 import logging
 import sys
 import time
-from datetime import date
-from datetime import timedelta
+import datetime
+from dateutil.relativedelta import relativedelta
 
-## logging
+import timecalc
+
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
-file_handler = logging.FileHandler("workorder.log")
+
 formatter = logging.Formatter("%(levelname)s - %(asctime)s - %(name)s - %(funcName)s:%(lineno)d - %(message)s")
+
+file_handler = logging.FileHandler("workorder.log")
+file_handler.setLevel(logging.DEBUG)
 file_handler.setFormatter(formatter)
+
 logger.addHandler(file_handler)
 
 logger.info("started script: %s", os.path.abspath(__file__))
 
-## datetime
-today = date.today().strftime("%b " "%d")
-yesterday = (date.today() - timedelta(days=1)).strftime("%b " "%d")
-logger.debug(f"variable \"today\" is: {today}")
-logger.debug(f"variable \"yesterday\" is: {yesterday}")
+## convert date
+input_date = "2021-12-01"
+date = datetime.datetime.strptime(input_date, "%Y-%m-%d").strftime("%b " "%-d")
+logger.debug(f"using date: {date}")
 
 ## open external json secrets file to get credentials
 secrets_json_filename = (".secrets.json")
@@ -60,8 +62,8 @@ if url == "url" or url == "":
   sys.exit()
 
 ## inputvalues
-start_time = "14.00"
-end_time = "23.30"
+start_time = "09.00"
+end_time = "18.15"
 
 timecalc.starttime(start_time)
 timecalc.endtime(end_time)
@@ -98,24 +100,31 @@ password_field.send_keys(password)
 login_button = driver.find_element(By.XPATH, '//*[@id="app"]/div/div[2]/div[1]/div[2]/button[2]')
 login_button.click()
 
-## find and open workorder
-def open_order():
-    try:
-        order = WebDriverWait(driver, 3).until(EC.presence_of_element_located((By.XPATH, "//div[h6[contains(text(),'Operator')] or h6[contains(text(),'dienst')] and p[contains(text(),'{}')]]".format(today))))
-        order.click()
-        text = order.text.replace("\n", " ")
-        logger.info(f"workorder \"{text}\" selected")
-    except Exception as e:
-        logger.error(e)
-        sys.exit()
 
-open_order()
+## find and open workorder
+try:
+    order = WebDriverWait(driver, 3).until(EC.presence_of_element_located((By.XPATH, "//div/p[contains(text(),'Dec 1') and preceding-sibling::h6[contains(text(),'motorkap')]]")))
+    order.click()
+except Exception as e:
+    logger.error(e)
+    sys.exit()
+
+
+# ## find and open workorder
+# try:
+#     order = WebDriverWait(driver, 3).until(EC.presence_of_element_located((By.XPATH, "//div[h6[contains(text(),'motorkap')] or h6[contains(text(),'dienst')] and p[contains(text(),'{}')]]".format(today))))
+#     order.click()
+#     text = order.text.replace("\n", " ")
+#     logger.info(f"workorder \"{text}\" selected")
+# except Exception as e:
+#     logger.error(e)
+#     sys.exit()
 
 ## wait for order container
 WebDriverWait(driver, 5).until(EC.presence_of_element_located((By.XPATH, '//input[@class="time-input hours"]')))
 
 ## enter start time
-start_hours = driver.find_element(By.XPATH, '//fieldset/div[2]/div[1]/span/input[1][@class="time-input hours"]')
+start_hours = driver.find_element(By.XPATH, '//div[1]/span/input[1][@class="time-input hours"]')
 start_hours.send_keys(Keys.BACKSPACE)
 start_hours.send_keys(timecalc.starttime.hours)
 start_minutes = driver.find_element(By.XPATH, '//input[2][@class="time-input minutes"]')
@@ -134,7 +143,7 @@ logger.info(f"end time {end_hours}:{end_minutes} has filled in")
 actions = ActionChains(driver)
 actions.send_keys(Keys.TAB * 7)
 ## enter the submit button because .click() cannot be executed with selenium the reason for this is because the button cannot be found based on XPATH, TAG or TEXT
-actions.send_keys(Keys.ENTER)
+# actions.send_keys(Keys.ENTER)
 ## perform the above actions
 actions.perform()
 

@@ -3,11 +3,6 @@ import logging
 
 ## logging
 logger = logging.getLogger(__name__)
-logger.setLevel(logging.DEBUG)
-file_handler = logging.FileHandler("workorder.log")
-formatter = logging.Formatter("%(levelname)s - %(asctime)s - %(name)s - %(funcName)s:%(lineno)d - %(message)s")
-file_handler.setFormatter(formatter)
-logger.addHandler(file_handler)
 
 def starttime(time):
     time = re.split("\D",time)
@@ -19,7 +14,7 @@ def starttime(time):
         minut = 15
     elif minut <= 45 >= 30:
         minut = 30
-    elif minut <= 59 >= 45:
+    else:
         minut = 45
     starttime.minut = (f"{minut:02d}")
     starttime.hours = hours
@@ -35,7 +30,7 @@ def endtime(time):
         minut = 30
     elif minut <= 45 >= 30:
         minut = 45
-    elif minut <= 59 >= 45:
+    else:
         minut = 00
         hours += 1
         if hours == 24:
