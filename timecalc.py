@@ -1,40 +1,46 @@
 import re
-import logging
+import datetime
 
-## logging
-logger = logging.getLogger(__name__)
 
-def starttime(time):
-    time = re.split("\D",time)
+def convert_date(date_input):
+    """Return date as month with three letters and day as number"""
+    date_output = datetime.datetime.strptime(
+        date_input, "%Y-%m-%d").strftime("%b " "%-d")
+    return date_output
+
+
+def split_time(time):
+    """Return time 'HH', 'MM' as list, any non digit character will be used as seperator"""
+    time = re.split("\D", time)
     hours = int(time[0])
-    minut = int(time[1])
-    if minut <= 15:
-        minut = 00
-    elif minut <= 30 >= 15:
-        minut = 15
-    elif minut <= 45 >= 30:
-        minut = 30
-    else:
-        minut = 45
-    starttime.minut = (f"{minut:02d}")
-    starttime.hours = hours
-    logger.info(f"using starttime: {starttime.hours}:{starttime.minut}")
+    minute = int(time[1])
+    return [hours, minute]
 
-def endtime(time):
-    time = re.split("\D",time)
-    hours = int(time[0])
-    minut = int(time[1])
-    if minut <= 15 >= 00:
-        minut = 15
-    elif minut <= 30 >= 15:
-        minut = 30
-    elif minut <= 45 >= 30:
-        minut = 45
+
+def time_round_down(hour, minute):
+    """Return time 'HH', 'MM' with minutes rounded down to a quarter"""
+    if minute <= 15:
+        minute = 00
+    elif minute <= 30 >= 15:
+        minute = 15
+    elif minute <= 45 >= 30:
+        minute = 30
     else:
-        minut = 00
-        hours += 1
-        if hours == 24:
-            hours = 00
-    endtime.minut = (f"{minut:02d}")
-    endtime.hours = hours
-    logger.info(f"using endtime: {endtime.hours}:{endtime.minut}")
+        minute = 45
+    return (f"{hour:02d}"), (f"{minute:02d}")
+
+
+def time_round_up(hour, minute):
+    """Return time 'HH', 'MM' with minutes rounded up to a quarter"""
+    if minute <= 15 >= 00:
+        minute = 15
+    elif minute <= 30 >= 15:
+        minute = 30
+    elif minute <= 45 >= 30:
+        minute = 45
+    else:
+        minute = 00
+        hour += 1
+        if hour == 24:
+            hour = 00
+    return (f"{hour:02d}"), (f"{minute:02d}")
