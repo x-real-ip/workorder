@@ -5,4 +5,5 @@
 /include
 /lib
 /share
-/__pycache__/
+**/__pycache__/
+*.db
