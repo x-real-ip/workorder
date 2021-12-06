@@ -1,17 +1,14 @@
 from sqlalchemy.orm import Session
-from fastapi import FastAPI, Depends, BackgroundTasks
-from pydantic import BaseModel
+from fastapi import FastAPI, Depends
+
 
 from database import SessionLocal, engine
 import models
-from models import Workday
+from schemas import WorkdayRequestSchema
+from models import WorkdayDBModel
 
 app = FastAPI()
 models.Base.metadata.create_all(bind=engine)
-
-
-class WorkdayRequest(BaseModel):
-    date: str
 
 
 def get_db():
@@ -22,19 +19,14 @@ def get_db():
         db.close()
 
 
-def fetch_workday_data(id: int):
-    db = SessionLocal()
-    workday = db.query(Workday).filter(Workday.id == id).first()
-
-
 @app.post("/workday/")
-def workday_entry(workday_request: WorkdayRequest, backgrond_tasks: BackgroundTasks, db: Session = Depends(get_db)):
-    workday = Workday()
-    workday.date = workday_request.date
+def workday_entry(workday_request: WorkdayRequestSchema, db: Session = Depends(get_db)):
+    workday_model = WorkdayDBModel()
+    workday_model.date = workday_request.date
+    workday_model.start_time = workday_request.start_time
+    workday_model.end_time = workday_request.end_time
 
-    db.add(workday)
+    db.add(workday_model)
     db.commit()
 
-    backgrond_tasks.add_task(fetch_workday_data, workday.id)
-
-    return {"message": "test"}
+    return "Post succeed", workday_request
