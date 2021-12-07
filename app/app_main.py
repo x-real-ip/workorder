@@ -2,12 +2,14 @@
 # script writtin by Coen Stam
 # version 2021.12.0
 
+import datetime
 import json
 import os
 import logging
 
-import timecalc
-import webdriver
+import app_timecalc
+import app_webdriver
+from app_query import db_query
 
 # Logging
 logger = logging.getLogger(__name__)
@@ -43,20 +45,31 @@ logger.debug("variable \"password\" wil not be exposed in this log")
 logger.debug(f"variable \"username\" is set to {username}")
 logger.debug(f"variable \"url\" is set to: {url}")
 
-webdriver.open_webpage(url)
-webdriver.login_webpage(username, password)
+# Webdriver action
+app_webdriver.open_webpage(url)
+app_webdriver.login_webpage(username, password)
 
-original_date = "2021-12-03"
-converted_date = timecalc.convert_date(original_date)
+# Get yesterday date as string
+today = datetime.date.today()
+yesterday = str(today - datetime.timedelta(days=1))
 
-webdriver.open_workorder(converted_date)
+# Use date converter e.g. "2021-01-01 -> "1 Jan"
+converted_date = app_timecalc.convert_date(yesterday)
 
-start_time = "12.00"
-final_start_time = timecalc.time_round_down(*timecalc.split_time(start_time))
+app_webdriver.open_workorder(converted_date)
+
+# Query yesterday's time data from database
+database_name = "workdays.db"
+db_query_result = db_query(database_name, yesterday)
+start_time = db_query_result[2]
+end_time = db_query_result[3]
+
+# Round down and round up time
+final_start_time = app_timecalc.time_round_down(
+    *app_timecalc.split_time(start_time))
 logger.debug(f"using starttime: {final_start_time}")
 
-end_time = "22.29"
-final_end_time = timecalc.time_round_up(*timecalc.split_time(end_time))
+final_end_time = app_timecalc.time_round_up(*app_timecalc.split_time(end_time))
 logger.debug(f"using endtime: {final_end_time}")
 
-webdriver.fill_in_form(*final_start_time, *final_end_time)
+app_webdriver.fill_in_form(*final_start_time, *final_end_time)

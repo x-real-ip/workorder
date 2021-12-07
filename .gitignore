@@ -1,9 +1,6 @@
 *.log
-.secrets.json
-/lib64
-/bin
-/include
-/lib
-/share
-**/__pycache__/
 *.db
+
+**/__pycache__/
+
+.secrets.json

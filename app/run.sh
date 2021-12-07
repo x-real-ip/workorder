@@ -1,1 +1,1 @@
-uvicorn main:app --reload
+uvicorn app_api:app --reload

@@ -1,5 +1,5 @@
 from sqlalchemy import Column, Integer, String, Date
-from database import Base
+from db_database import Base
 
 
 class WorkdayDBModel(Base):

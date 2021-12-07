@@ -2,13 +2,13 @@ from sqlalchemy.orm import Session
 from fastapi import FastAPI, Depends
 
 
-from database import SessionLocal, engine
-import models
-from schemas import WorkdayRequestSchema
-from models import WorkdayDBModel
+from db_database import SessionLocal, engine
+import db_models
+from db_schemas import WorkdayRequestSchema
+from db_models import WorkdayDBModel
 
 app = FastAPI()
-models.Base.metadata.create_all(bind=engine)
+db_models.Base.metadata.create_all(bind=engine)
 
 
 def get_db():
