@@ -1,48 +1,21 @@
-# installation
+# Workorder
 
-## 1. install python
+## Requirements
+
+1. a server running docker.
+2. a Android device to run Tasker.
+
+## How it works
+
+On your Android device tasker will monitor if you are on your work location or home location based on near or connected wifi SSID signal.
+
+## Setup
+
+1. Pull this repository to your docker host.
+2. Change "prd-workorder-app.env.example to Change "prd-workorder-app.env".
 
 ```bash
-sudo apt update
-sudo apt -y upgrade
-```
-
-check if python is installed
 
 ```
-python3 -V
-```
 
-install pip
-
-```
-sudo apt install -y python3-pip
-```
-
-## 2. install selenium python package
-
-```
-pip3 install selenium
-```
-
-## 3. install google-chrome
-```
-sudo apt update
-wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
-sudo apt install ./google-chrome-stable_current_amd64.deb
-```
-
-wget https://chromedriver.storage.googleapis.com/96.0.4664.45/chromedriver_linux64.zip
-unzip chromedriver_linux64.zip
-sudo mv chromedriver /usr/bin/chromedriver
-sudo chown root:root /usr/bin/chromedriver
-sudo chmod +x /usr/bin/chromedriver
-```
-
-## 4. install chromium webdriver
-
-```
-sudo apt-get update -y
-sudo apt-get install -y chromium-chromedriver
-```
-
+3. Fill in the URL, username and password in the "prd-workorder-app.env" file.
