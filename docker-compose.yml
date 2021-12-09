@@ -9,7 +9,7 @@ services:
     networks:
       - reverse-proxy
     ports:
-      - 8000:8000
+      - 8050:8000
 
 networks:
   reverse-proxy:
