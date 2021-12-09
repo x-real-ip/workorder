@@ -22,6 +22,10 @@ EXPOSE 8000
 
 WORKDIR /code/app
 
-CMD ["python", "test.py"]
+RUN chmod +x /start.sh
+
+CMD ["/start.sh"]
+
+# CMD ["python", "test.py"]
 
 # CMD ["uvicorn", "app_api:app", "--host", "0.0.0.0", "--port", "8000"]
