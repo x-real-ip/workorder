@@ -22,9 +22,9 @@ EXPOSE 8000
 
 WORKDIR /code/app
 
-RUN chmod +x start.sh
+RUN chmod +x start.sh && ./start.sh
 
-CMD ["./start.sh"]
+# CMD ["./start.sh"]
 
 # CMD ["python", "test.py"]
 
