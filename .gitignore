@@ -1,6 +1,10 @@
 *.log
 *.db
 
-**/__pycache__/
-
 .secrets.json
+pyvenv.cfg
+
+**/__pycache__/
+/bin
+/include
+/lib
