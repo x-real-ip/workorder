@@ -10,6 +10,8 @@ services:
       - reverse-proxy
     ports:
       - 8050:8000
+    volumes:
+      - ./app:/code/app
 
 networks:
   reverse-proxy:
