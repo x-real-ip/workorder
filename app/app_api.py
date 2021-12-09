@@ -19,7 +19,7 @@ def get_db():
         db.close()
 
 
-@app.post("/workday/")
+@app.post("/workday")
 def workday_entry(workday_request: WorkdayRequestSchema, db: Session = Depends(get_db)):
     workday_model = WorkdayDBModel()
     workday_model.date = workday_request.date

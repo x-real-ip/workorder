@@ -7,6 +7,6 @@ class WorkdayDBModel(Base):
 
     id = Column(Integer, primary_key=True, index=True)
 
-    date = Column(Date, unique=True)
+    date = Column(Date)
     start_time = Column(String)
     end_time = Column(String(4))
