@@ -22,10 +22,12 @@ EXPOSE 8000
 
 WORKDIR /code/app
 
-RUN chmod +x start.sh && ./start.sh
+RUN apt-get update \
+    && apt-get install -y cron
 
-# CMD ["./start.sh"]
+COPY cronjob /etc/cron.d/cronjob
 
-# CMD ["python", "test.py"]
+RUN chmod 0644 /etc/cron.d/cronjob &&\
+    crontab /etc/cron.d/cronjob
 
-# CMD ["uvicorn", "app_api:app", "--host", "0.0.0.0", "--port", "8000"]
+CMD ["uvicorn", "app_api:app", "--host", "0.0.0.0", "--port", "8000"]
