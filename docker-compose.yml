@@ -16,9 +16,3 @@ services:
 networks:
   reverse-proxy:
     name: reverse-proxy
-  vpn-server:
-    driver: bridge
-    name: vpn-server
-    ipam:
-      config:
-        - subnet: 172.36.0.0/16
