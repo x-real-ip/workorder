@@ -20,6 +20,7 @@ git clone https://github.com/theautomation/workorder.git
 2. Change "prd-workorder-app.env.example to Change "prd-workorder-app.env".
 
 ```bash
+mv ./prd-workorder-app.env.example ./prd-workorder-app.env
 
 ```
 
