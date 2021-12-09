@@ -7,9 +7,9 @@
 
 ## How it works
 
-On your Android device Tasker will monitor if you are on your work location or home location based on near or connected wifi SSID signal.
-
 Tasker is an application for Android which performs tasks (sets of actions) based on contexts (application, time, date, location, event, gesture) in user-defined profiles or in clickable or timer home screen widgets.
+
+On your Android device Tasker will monitor if you are on your work location or home location based on near or connected wifi SSID signal.
 
 ## Setup
 

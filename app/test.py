@@ -17,6 +17,7 @@
 import datetime
 import os
 import logging
+from sys import stdout
 
 import app_timecalc
 import app_webdriver
@@ -34,7 +35,7 @@ file_handler.setLevel(logging.DEBUG)
 file_handler.setFormatter(formatter)
 logger.addHandler(file_handler)
 
-stream_handler = logging.StreamHandler()
+stream_handler = logging.StreamHandler(stdout)
 stream_handler.setLevel(logging.DEBUG)
 stream_handler.setFormatter(formatter)
 logger.addHandler(stream_handler)
