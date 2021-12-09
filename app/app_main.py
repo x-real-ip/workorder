@@ -9,7 +9,7 @@ import logging
 
 import app_timecalc
 import app_webdriver
-from app_query import db_query
+from db_query import query
 
 # Logging
 logger = logging.getLogger(__name__)
@@ -59,8 +59,7 @@ converted_date = app_timecalc.convert_date(yesterday)
 app_webdriver.open_workorder(converted_date)
 
 # Query yesterday's time data from database
-database_name = "workdays.db"
-db_query_result = db_query(database_name, yesterday)
+db_query_result = query("database.db", yesterday)
 start_time = db_query_result[2]
 end_time = db_query_result[3]
 
