@@ -2,8 +2,8 @@
 
 ## Requirements
 
-1. a server running docker.
-2. a Android device to run Tasker.
+- a server running docker.
+- a Android device to run Tasker.
 
 ## How it works
 
@@ -12,6 +12,11 @@ On your Android device tasker will monitor if you are on your work location or h
 ## Setup
 
 1. Pull this repository to your docker host.
+
+```bash
+git clone https://github.com/theautomation/workorder.git
+```
+
 2. Change "prd-workorder-app.env.example to Change "prd-workorder-app.env".
 
 ```bash
