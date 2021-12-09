@@ -24,7 +24,7 @@ WORKDIR /code/app
 
 RUN chmod +x ./start.sh
 
-CMD ["start.sh"]
+CMD ["./start.sh"]
 
 # CMD ["python", "test.py"]
 
