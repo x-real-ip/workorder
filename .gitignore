@@ -2,7 +2,6 @@
 *.db
 *.env
 
-.secrets.json
 pyvenv.cfg
 
 **/__pycache__/

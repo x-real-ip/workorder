@@ -20,8 +20,12 @@ formatter = logging.Formatter(
 file_handler = logging.FileHandler("workorder.log")
 file_handler.setLevel(logging.DEBUG)
 file_handler.setFormatter(formatter)
-
 logger.addHandler(file_handler)
+
+stream_handler = logging.StreamHandler()
+stream_handler.setLevel(logging.DEBUG)
+stream_handler.setFormatter(formatter)
+logger.addHandler(stream_handler)
 
 logger.info("started script: %s", os.path.abspath(__file__))
 

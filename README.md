@@ -2,12 +2,14 @@
 
 ## Requirements
 
-- a server running docker.
-- a Android device to run Tasker.
+- a server running [Docker](https://www.docker.com/).
+- a Android device to run [Tasker](https://tasker.joaoapps.com/).
 
 ## How it works
 
-On your Android device tasker will monitor if you are on your work location or home location based on near or connected wifi SSID signal.
+On your Android device Tasker will monitor if you are on your work location or home location based on near or connected wifi SSID signal.
+
+Tasker is an application for Android which performs tasks (sets of actions) based on contexts (application, time, date, location, event, gesture) in user-defined profiles or in clickable or timer home screen widgets.
 
 ## Setup
 
@@ -17,7 +19,7 @@ On your Android device tasker will monitor if you are on your work location or h
 git clone https://github.com/theautomation/workorder.git
 ```
 
-2. Change "prd-workorder-app.env.example to Change "prd-workorder-app.env".
+2. Change "prd-workorder-app.env.example to "prd-workorder-app.env".
 
 ```bash
 mv ./prd-workorder-app.env.example ./prd-workorder-app.env
@@ -25,3 +27,12 @@ mv ./prd-workorder-app.env.example ./prd-workorder-app.env
 ```
 
 3. Fill in the URL, username and password in the "prd-workorder-app.env" file.
+
+```
+# URL to open
+WEB_URL="https://example.com"
+
+# Enter credentials for web login
+WEB_USERNAME="username"
+WEB_PASSWORD="password"
+```
