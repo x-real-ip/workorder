@@ -1,0 +1,113 @@
+---
+kind: pipeline
+name: validate
+
+steps:
+  - name: yamllint
+    image: sdesbure/yamllint:latest
+    commands:
+      - yamllint -c ./.yamllint .
+
+  - name: docker-compose
+    image: tmaier/docker-compose:latest
+    commands:
+      - mv prd-${DRONE_REPO_NAME}-app.env.example prd-${DRONE_REPO_NAME}-app.env
+      - docker-compose config -q
+
+---
+kind: pipeline
+type: docker
+name: build
+
+depends_on:
+  - validate
+
+steps:
+  - name: publish
+    image: plugins/docker
+    settings:
+      username:
+        from_secret: docker-registry-username
+      password:
+        from_secret: docker-registry-password
+      registry: docker-registry.theautomation.nl
+      repo: docker-registry.theautomation.nl/coen/prd-${DRONE_REPO_NAME}-app
+      auto_tag: true
+
+---
+kind: pipeline
+type: docker
+name: upgrade
+
+depends_on:
+  - build
+
+steps:
+  - name: upgrade
+    image: appleboy/drone-ssh
+    settings:
+      host: docker-host.lan
+      username: coen
+      password:
+        from_secret: ssh_password
+      port: 22
+      script:
+        - cd /home/coen/docker-home-services/${DRONE_REPO_NAME}/
+        - git pull
+        - docker-compose pull
+
+  - name: deploy
+    image: appleboy/drone-ssh
+    settings:
+      host: docker-host.lan
+      username: coen
+      password:
+        from_secret: ssh_password
+      port: 22
+      script:
+        - cd /home/coen/docker-home-services/${DRONE_REPO_NAME}/
+        - docker-compose up -d
+
+  - name: clean
+    image: appleboy/drone-ssh
+    settings:
+      host: docker-host.lan
+      username: coen
+      password:
+        from_secret: ssh_password
+      port: 22
+      script:
+        - cd /home/coen/docker-home-services/${DRONE_REPO_NAME}/
+        - docker image prune -f
+
+---
+kind: pipeline
+name: notify webhook
+
+trigger:
+  status:
+    - success
+    - failure
+
+depends_on:
+  - upgrade
+
+steps:
+  - name: send
+    image: plugins/webhook
+    settings:
+      username:
+        from_secret: nodered_endpoint_username
+      password:
+        from_secret: nodered_endpoint_password
+      urls: http://nodered.docker/drone/notify
+      skip_verify: true
+      content_type: application/json
+      template: |
+        {
+          "owner": "{{ repo.owner }}",
+          "repo": "{{ repo.name }}",
+          "status": "{{ build.status }}",
+          "buildnumber": "{{ build.number }}",
+          "buildlink": "{{ build.link }}"
+        }

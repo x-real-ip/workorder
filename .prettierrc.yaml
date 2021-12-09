@@ -1,6 +1,9 @@
 ---
 # Configuration file for Prettier
-
+#
+# Prettier formats files automatically,
+# this makes things look consistently.
+#
 printWidth: 88
 tabWidth: 2
 useTabs: true

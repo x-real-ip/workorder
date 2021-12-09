@@ -1,0 +1,22 @@
+---
+version: "3.8"
+services:
+  prd-workorder-app:
+    image: docker-registry.theautomation.nl/coen/prd-workorder-app:latest
+    container_name: prd-workorder-app
+    restart: unless-stopped
+    env_file: prd-workorder.env
+    networks:
+      - reverse-proxy
+    ports:
+      - 8000:8000
+
+networks:
+  reverse-proxy:
+    name: reverse-proxy
+  vpn-server:
+    driver: bridge
+    name: vpn-server
+    ipam:
+      config:
+        - subnet: 172.36.0.0/16
