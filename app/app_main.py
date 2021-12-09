@@ -3,7 +3,6 @@
 # version 2021.12.0
 
 import datetime
-import json
 import os
 import logging
 
@@ -26,28 +25,41 @@ logger.addHandler(file_handler)
 
 logger.info("started script: %s", os.path.abspath(__file__))
 
-# Open external json secrets file to get credentials
-secrets_json_filename = (".secrets.json")
-secrets_json_path = os.path.abspath(secrets_json_filename)
-logger.debug("using secrets from file: %s", secrets_json_path)
 
-try:
-    with open(secrets_json_path) as secrets_json:
-        objects_secrets_json = json.load(secrets_json)
-        secrets_json.close()
-except FileNotFoundError as e:
-    logger.error(e)
+# Check os env variables
+if "WEB_URL" in os.environ:
+    web_url = os.getenv("WEB_URL")
+    logger.debug(f"using url: {web_url}")
+    if web_url == "URL" or web_url == "":
+        logger.error(
+            "Please set a correct URL in the prd-workorder-app.env file")
+else:
+    logger.error(
+        "No URL os env find please check prd-workorder-app.env file")
 
-username = objects_secrets_json["username"]
-password = objects_secrets_json["password"]
-url = objects_secrets_json["url"]
-logger.debug("variable \"password\" wil not be exposed in this log")
-logger.debug(f"variable \"username\" is set to {username}")
-logger.debug(f"variable \"url\" is set to: {url}")
+if "WEB_USERNAME" in os.environ:
+    web_username = os.getenv("WEB_USERNAME")
+    logger.debug(f"using username: {web_username}")
+    if web_username == "username" or web_username == "":
+        logger.error(
+            "Please set a correct username in the prd-workorder-app.env file")
+else:
+    logger.error(
+        "No username os env find please check prd-workorder-app.env file")
+
+if "WEB_PASSWORD" in os.environ:
+    web_password = os.getenv("WEB_PASSWORD")
+    if web_password == "password" or web_password == "":
+        logger.error(
+            "Please set a correct password in the prd-workorder-app.env file")
+else:
+    logger.error(
+        "No password os env find please check prd-workorder-app.env file")
+
 
 # Webdriver action
-app_webdriver.open_webpage(url)
-app_webdriver.login_webpage(username, password)
+app_webdriver.open_webpage(web_url)
+app_webdriver.login_webpage(web_username, web_password)
 
 # Get yesterday date as string
 today = datetime.date.today()
@@ -56,12 +68,14 @@ yesterday = str(today - datetime.timedelta(days=1))
 # Use date converter e.g. "2021-01-01 -> "1 Jan"
 converted_date = app_timecalc.convert_date(yesterday)
 
-app_webdriver.open_workorder(converted_date)
-
 # Query yesterday's time data from database
 db_query_result = query("database.db", yesterday)
 start_time = db_query_result[2]
 end_time = db_query_result[3]
+
+# Open workorder that contains converted date if not exists it will exit
+app_webdriver.open_workorder(converted_date)
+
 
 # Round down and round up time
 final_start_time = app_timecalc.time_round_down(
@@ -72,3 +86,7 @@ final_end_time = app_timecalc.time_round_up(*app_timecalc.split_time(end_time))
 logger.debug(f"using endtime: {final_end_time}")
 
 app_webdriver.fill_in_form(*final_start_time, *final_end_time)
+
+app_webdriver.send_workorder()
+
+app_webdriver.quit()

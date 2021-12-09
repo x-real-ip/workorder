@@ -25,9 +25,12 @@ logger.addHandler(file_handler)
 logger.info("started script: %s", os.path.abspath(__file__))
 
 # Selenium
-options = Options()
-options.headless = False
-driver = webdriver.Chrome(options=options)
+chrome_options = Options()
+chrome_options.add_argument('--headless')
+chrome_options.add_argument('--no-sandbox')
+chrome_options.add_argument('--disable-dev-shm-usage')
+
+driver = webdriver.Chrome(chrome_options=chrome_options)
 
 
 def open_webpage(url):
@@ -51,8 +54,8 @@ def open_workorder(date):
         order = WebDriverWait(driver, 3).until(EC.presence_of_element_located(
             (By.XPATH, "//div/p[contains(text(),'{}') and preceding-sibling::h6[contains(text(),'dienst') or contains(text(),'Operator') or contains(text(),'motorkap')]]".format(date))))
         order.click()
-    except Exception as e:
-        logger.info(f"no workorder was found, closing webdriver {e}")
+    except Exception:
+        logger.info(f"no workorder was found, closing webdriver")
         driver.quit()
         sys.exit()
 
@@ -79,23 +82,17 @@ def fill_in_form(start_hour, start_minute, end_hour, end_minute):
 
 
 def send_workorder():
-    actions = ActionChains(driver)
-    actions.send_keys(Keys.TAB * 7)
-    actions.send_keys(Keys.ENTER)
-    actions.perform()
-
-
-def check_send():
     try:
-        close_button = WebDriverWait(driver, 3).until(EC.presence_of_element_located(
-            (By.XPATH, "//button[class='button medium primary icon-padding-right']")))
-        close_button.click()
+        actions = ActionChains(driver)
+        actions.send_keys(Keys.TAB * 7)
+        actions.send_keys(Keys.ENTER)
+        actions.perform()
     except Exception:
         logger.error(
-            "workorder was not closed properly and it probably was not sent")
+            "workorder was not being send")
         sys.exit()
     else:
-        logger.info("workorder completed successfully")
+        logger.info("workorder send successfully")
 
 
 def quit():
