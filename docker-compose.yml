@@ -2,6 +2,7 @@
 version: "3.8"
 services:
   prd-workorder-app:
+    # image: python:3.9
     image: docker-registry.theautomation.nl/coen/prd-workorder-app:latest
     container_name: prd-workorder-app
     restart: unless-stopped
@@ -12,7 +13,6 @@ services:
       - 8050:8000
     volumes:
       - ./app:/code/app
-
 networks:
   reverse-proxy:
     name: reverse-proxy
