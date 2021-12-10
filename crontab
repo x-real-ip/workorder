@@ -1,1 +1,2 @@
-* * * * * /usr/bin/sh /code/script.sh
+* * * * * python /code/test.python
+# empty line
