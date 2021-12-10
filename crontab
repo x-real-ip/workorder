@@ -1,2 +1,2 @@
-* * * * * python /code/test.python
+* * * * * python /code/test.python > /dev/stdout
 # empty line
