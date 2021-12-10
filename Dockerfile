@@ -25,4 +25,4 @@ ENV DISPLAY=:99
 # Unbuffer python log messages
 ENV PYTHONUNBUFFERED=1
 
-CMD ["python", "./app/app_api.py"]
+CMD ["python", "/app/app_api.py"]
