@@ -1,3 +1,4 @@
+from logging import critical
 from sqlalchemy.orm import Session
 from fastapi import FastAPI, Depends
 import uvicorn
@@ -10,7 +11,6 @@ from db_models import WorkdayDBModel
 from app_helper import logging
 
 logger = logging.getLogger(__name__)
-
 
 app = FastAPI()
 db_models.Base.metadata.create_all(bind=engine)
