@@ -18,7 +18,7 @@ FROM python:3.10
 
 WORKDIR /code
 
-COPY ./crontab.txt /code/crontab.txt
+COPY ./crontab /code/crontab
 COPY ./script.sh /code/script.sh
 COPY ./entrypoint.sh /code/entrypoint.sh
 COPY ./requirements.txt /code/requirements.txt
