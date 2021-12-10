@@ -1,1 +1,1 @@
-* * * * * root echo /code/script.sh >> /var/log/cron.log 2>&1
+* * * * * root /code/script.sh >> /var/log/cron.log 2>&1
