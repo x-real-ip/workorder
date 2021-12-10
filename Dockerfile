@@ -8,7 +8,6 @@ COPY ./entrypoint.sh /code/entrypoint.sh
 COPY ./requirements.txt /code/requirements.txt
 
 RUN chmod 755 ./script.sh ./entrypoint.sh
-RUN /usr/bin/crontab /crontab.txt
 
 RUN pip install --no-cache-dir --upgrade -r /code/requirements.txt
 
@@ -34,6 +33,4 @@ ENV DISPLAY=:99
 # Unbuffer python log messages
 ENV PYTHONUNBUFFERED=1
 
-
-
-CMD ["/bin/bash", "/entrypoint.sh"]
+ENTRYPOINT ["/bin/bash", "/entrypoint.sh"]
