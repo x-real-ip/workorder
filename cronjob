@@ -1,1 +1,1 @@
-* * * * * root python /code/app/test.py
+* * * * * root python /code/app/test.py >> /var/log/cron.log

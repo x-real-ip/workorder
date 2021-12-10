@@ -5,24 +5,11 @@ from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 from selenium import webdriver
-import logging
 import sys
-import os
 
-# Logging
+from app_helper import logging
+
 logger = logging.getLogger(__name__)
-logger.setLevel(logging.DEBUG)
-
-formatter = logging.Formatter(
-    "%(levelname)s - %(asctime)s - %(name)s - %(funcName)s:%(lineno)d - %(message)s")
-
-file_handler = logging.FileHandler("workorder.log")
-file_handler.setLevel(logging.DEBUG)
-file_handler.setFormatter(formatter)
-
-logger.addHandler(file_handler)
-
-logger.info("started script: %s", os.path.abspath(__file__))
 
 # Selenium
 chrome_options = Options()
