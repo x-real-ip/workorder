@@ -49,4 +49,4 @@ COPY ./cronjob /etc/cron.d/cronjob
 RUN chmod 0644 /etc/cron.d/cronjob \
     && crontab /etc/cron.d/cronjob
 
-CMD ["python", "app_main.py"]
+CMD ["python3", "app_main.py"]
