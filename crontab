@@ -1,1 +1,1 @@
-* * * * * /code/script.sh >> /var/log/cron.log 2>&1
+* * * * * /usr/bin/sh /code/script.sh
