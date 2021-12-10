@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 # script writtin by Coen Stam
 # version 2021.12.0
 
@@ -11,8 +10,6 @@ import app_webdriver
 from db_query import query
 from app_helper import logging
 
-
-# Logging
 logger = logging.getLogger(__name__)
 
 logger.info("started script: %s", os.path.abspath(__file__))

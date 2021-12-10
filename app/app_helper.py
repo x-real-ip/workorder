@@ -6,7 +6,7 @@ logger = logging.getLogger()
 logger.setLevel(logging.DEBUG)
 
 formatter = logging.Formatter(
-    "%(levelname)s - %(asctime)s - %(name)s - %(funcName)s:%(lineno)d - %(message)s")
+    "%(asctime)s - %(levelname)-8s - %(name)s - %(funcName)s:%(lineno)d - %(message)s")
 
 file_handler = logging.FileHandler("workorder.log")
 file_handler.setLevel(logging.DEBUG)

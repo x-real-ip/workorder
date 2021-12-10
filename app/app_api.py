@@ -1,11 +1,16 @@
 from sqlalchemy.orm import Session
 from fastapi import FastAPI, Depends
-
+import uvicorn
 
 from db_database import SessionLocal, engine
 import db_models
 from db_schemas import WorkdayRequestSchema
 from db_models import WorkdayDBModel
+
+from app_helper import logging
+
+logger = logging.getLogger(__name__)
+
 
 app = FastAPI()
 db_models.Base.metadata.create_all(bind=engine)
@@ -30,3 +35,7 @@ def workday_entry(workday_request: WorkdayRequestSchema, db: Session = Depends(g
     db.commit()
 
     return "Post succeed", workday_request
+
+
+if __name__ == "__main__":
+    uvicorn.run(app, host="0.0.0.0", port=8000)
