@@ -28,10 +28,10 @@ ENV DISPLAY=:99
 # Unbuffer python log messages
 ENV PYTHONUNBUFFERED=1
 
-COPY crontab.txt /crontab.txt
-COPY script.sh /script.sh
-COPY entry.sh /entry.sh
-RUN chmod 755 /script.sh /entry.sh
+COPY ./crontab.txt /crontab.txt
+COPY ./script.sh /script.sh
+COPY ./entrypoint.sh /entrypoint.sh
+RUN chmod 755 /script.sh /entrypoint.sh
 RUN /usr/bin/crontab /crontab.txt
 
-CMD ["/entry.sh"]
+CMD ["/bin/bash", "/entrypoint.sh"]
