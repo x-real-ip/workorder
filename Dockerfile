@@ -2,10 +2,13 @@ FROM python:3.10
 
 WORKDIR /code
 
-COPY ./crontab.txt code/crontab.txt
-COPY ./script.sh code/script.sh
-COPY ./entrypoint.sh code/entrypoint.sh
+COPY ./crontab.txt /code/crontab.txt
+COPY ./script.sh /code/script.sh
+COPY ./entrypoint.sh /code/entrypoint.sh
 COPY ./requirements.txt /code/requirements.txt
+
+RUN chmod 755 ./script.sh ./entrypoint.sh
+RUN /usr/bin/crontab /crontab.txt
 
 RUN pip install --no-cache-dir --upgrade -r /code/requirements.txt
 
@@ -31,7 +34,6 @@ ENV DISPLAY=:99
 # Unbuffer python log messages
 ENV PYTHONUNBUFFERED=1
 
-RUN chmod 755 /script.sh /entrypoint.sh
-RUN /usr/bin/crontab /crontab.txt
+
 
 CMD ["/bin/bash", "/entrypoint.sh"]
