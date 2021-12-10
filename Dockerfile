@@ -1,13 +1,8 @@
 FROM python:3.10
 
-# Add crontab file in the cron directory
-ADD crontab /etc/cron.d/hello-cron
-ADD script.sh /code/script.sh
-# Give execution rights on the cron job
-RUN chmod 0644 /etc/cron.d/hello-cron /code/script.sh
-
-# Create the log file to be able to run tail
-RUN touch /var/log/cron.log
+COPY crontab /etc/cron.d/crontab
+RUN chmod 0644 /etc/cron.d/crontab
+RUN /usr/bin/crontab /etc/cron.d/crontab
 
 # Install Cron
 RUN apt-get update

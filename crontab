@@ -1,2 +1,2 @@
-* * * * * root /usr/local/bin/python /code/test.python > /dev/stdout
+* * * * * echo "test" >> /crontest.txt 
 # empty line
