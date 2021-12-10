@@ -1,16 +1,19 @@
 FROM python:3.10
 
 COPY ./app/test.py /code/test.py
-COPY crontab /etc/cron.d/crontab
+ADD crontab /etc/cron.d/crontab
 RUN chmod 0644 /etc/cron.d/crontab
-# RUN /usr/bin/crontab /etc/cron.d/crontab
 
 # Install Cron
-RUN apt-get update
-RUN apt-get -y install cron
+RUN apt-get update \
+    && apt-get install -y cron \
+    && apt-get autoremove -y
 
 # Run the command on container startup
-CMD cron -L 2 -f
+CMD ["cron", "-f"]
+
+
+
 
 # WORKDIR /code
 
