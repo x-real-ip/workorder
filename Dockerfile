@@ -4,6 +4,7 @@ FROM ubuntu:21.04
 RUN apt-get update && apt-get install -y \
     wget \
     xvfb \
+    gnupg2 \
     unzip
 
 # Set up the Chrome PPA
