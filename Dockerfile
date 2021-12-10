@@ -14,7 +14,7 @@ RUN apt-get update
 RUN apt-get -y install cron
 
 # Run the command on container startup
-CMD cron -f
+CMD "cron", "-f"
 
 # WORKDIR /code
 
