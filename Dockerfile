@@ -30,4 +30,4 @@ COPY ./cronjob /etc/cron.d/cronjob
 RUN chmod 0644 /etc/cron.d/cronjob \
     && crontab /etc/cron.d/cronjob
 
-CMD ["uvicorn", "app_api:app", "--host", "0.0.0.0", "--port", "8000"]
+CMD ["python", "app_api.py"]
