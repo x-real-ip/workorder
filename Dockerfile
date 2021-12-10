@@ -22,8 +22,7 @@ RUN unzip /tmp/chromedriver.zip chromedriver -d /usr/local/bin/
 # set display port to avoid crash
 ENV DISPLAY=:99
 
-RUN pip install --upgrade pip
+# Unbuffer python log messages
+ENV PYTHONUNBUFFERED=1
 
-RUN pip install -r requirements.txt
-
-CMD ["python", "./app_api.py"]
+CMD ["python", "./app/app_api.py"]
