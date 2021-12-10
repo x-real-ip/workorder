@@ -4,6 +4,7 @@
 import datetime
 import os
 import logging
+import sys
 
 import app_timecalc
 import app_webdriver
@@ -45,25 +46,30 @@ else:
         "No password os env find please check prd-workorder-app.env file")
 
 
-# Webdriver action
+# Webdriver open URL
 app_webdriver.open_webpage(web_url)
+
+# Login with username and password
 app_webdriver.login_webpage(web_username, web_password)
 
 # Get yesterday date as string
 today = datetime.date.today()
 yesterday = str(today - datetime.timedelta(days=1))
 
+# Query yesterday's time data from database
+try:
+    db_query_result = query("database.db", yesterday)
+    start_time = db_query_result[2]
+    end_time = db_query_result[3]
+except TypeError as msg:
+    logger.error(f"can't find values in database: {msg}")
+    sys.exit()
+
 # Use date converter e.g. "2021-01-01 -> "1 Jan"
 converted_date = app_timecalc.convert_date(yesterday)
 
-# Query yesterday's time data from database
-db_query_result = query("database.db", yesterday)
-start_time = db_query_result[2]
-end_time = db_query_result[3]
-
 # Open workorder that contains converted date if not exists it will exit
 app_webdriver.open_workorder(converted_date)
-
 
 # Round down and round up time
 final_start_time = app_timecalc.time_round_down(
@@ -73,8 +79,11 @@ logger.debug(f"using starttime: {final_start_time}")
 final_end_time = app_timecalc.time_round_up(*app_timecalc.split_time(end_time))
 logger.debug(f"using endtime: {final_end_time}")
 
+# Fill in web form
 app_webdriver.fill_in_form(*final_start_time, *final_end_time)
 
+# Click "send"
 app_webdriver.send_workorder()
 
+# Quit webdriver
 app_webdriver.quit()

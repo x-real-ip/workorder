@@ -36,3 +36,10 @@ WEB_URL="https://example.com"
 WEB_USERNAME="username"
 WEB_PASSWORD="password"
 ```
+
+## To Do
+
+- Take loglevel from env consol and file
+- Schedulde app_main.py on time
+- Notification when workorder has completed
+- How many days back in time to use (db query and selenium workorder text to find)

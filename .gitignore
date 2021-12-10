@@ -3,6 +3,7 @@
 *.env
 
 pyvenv.cfg
+secrets.*
 
 **/__pycache__/
 /bin
