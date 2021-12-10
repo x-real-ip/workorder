@@ -1,1 +1,0 @@
-* * * * * root python /code/app/test.py >> /var/log/cron.log
