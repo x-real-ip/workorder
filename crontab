@@ -1,2 +1,2 @@
-* * * * * echo "test" >> /crontest.txt 
+* * * * * python /code/test.py > /proc/1/fd/1 2>/proc/1/fd/2
 # empty line

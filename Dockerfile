@@ -1,5 +1,6 @@
 FROM python:3.10
 
+COPY ./app/test.py /code/test.py
 COPY crontab /etc/cron.d/crontab
 RUN chmod 0644 /etc/cron.d/crontab
 # RUN /usr/bin/crontab /etc/cron.d/crontab
