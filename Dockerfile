@@ -2,8 +2,9 @@ FROM ubuntu:21.04
 
 RUN apt-get update \
     && apt-get install -y python3 \
-    && apt install -y python3-pip \
-    && apt-get install -y cron
+    && apt-get install -y python3-pip \
+    && apt-get install -y cron \
+    && apt-get install -y wget
 
 WORKDIR /code
 
