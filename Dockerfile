@@ -30,13 +30,17 @@ RUN unzip $CHROMEDRIVER_DIR/chromedriver* -d $CHROMEDRIVER_DIR
 # Put Chromedriver into the PATH
 ENV PATH $CHROMEDRIVER_DIR:$PATH
 
-
-
 # Install Python and cron
 RUN apt-get update && apt-get install -y \
     python3 \
     python3-pip \
     cron 
+
+COPY ./requirements.txt /code/requirements.txt
+
+WORKDIR /code
+
+RUN pip install --no-cache-dir --upgrade -r /code/requirements.txt
 
 ENV DISPLAY=:99
 
