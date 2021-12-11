@@ -11,7 +11,7 @@ steps:
   - name: docker-compose
     image: tmaier/docker-compose:latest
     commands:
-      - mv prd-${DRONE_REPO_NAME}-app.env.example prd-${DRONE_REPO_NAME}-app.env
+      - mv prd-${DRONE_REPO_NAME}-api.env.example prd-${DRONE_REPO_NAME}-api.env
       - docker-compose config -q
 
 ---
@@ -31,7 +31,7 @@ steps:
       password:
         from_secret: docker-registry-password
       registry: docker-registry.theautomation.nl
-      repo: docker-registry.theautomation.nl/coen/prd-${DRONE_REPO_NAME}-app
+      repo: docker-registry.theautomation.nl/coen/prd-${DRONE_REPO_NAME}-api
       auto_tag: true
 
 ---

@@ -6,10 +6,10 @@ import os
 import logging
 import sys
 
-import app_timecalc
-import workorder.app.worker.worker_webdriver as app_webdriver
-from workorder.app.worker.db_query import query
-from workorder.app.helper import logging
+import app.worker.worker_timecalc
+import app.worker.worker_webdriver as app_webdriver
+from app.worker.worker_query import query
+from app.helper import logging
 
 logger = logging.getLogger(__name__)
 
@@ -66,17 +66,18 @@ except TypeError as msg:
     sys.exit()
 
 # Use date converter e.g. "2021-01-01 -> "1 Jan"
-converted_date = app_timecalc.convert_date(yesterday)
+converted_date = app.worker.worker_timecalc.convert_date(yesterday)
 
 # Open workorder that contains converted date if not exists it will exit
 app_webdriver.open_workorder(converted_date)
 
 # Round down and round up time
-final_start_time = app_timecalc.time_round_down(
-    *app_timecalc.split_time(start_time))
+final_start_time = app.worker.worker_timecalc.time_round_down(
+    *app.worker.worker_timecalc.split_time(start_time))
 logger.debug(f"using starttime: {final_start_time}")
 
-final_end_time = app_timecalc.time_round_up(*app_timecalc.split_time(end_time))
+final_end_time = app.worker.worker_timecalc.time_round_up(
+    *app.worker.worker_timecalc.split_time(end_time))
 logger.debug(f"using endtime: {final_end_time}")
 
 # Fill in web form

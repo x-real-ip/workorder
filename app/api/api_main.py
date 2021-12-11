@@ -1,16 +1,15 @@
-from logging import critical
-from sqlalchemy.orm import Session
-from fastapi import FastAPI, Depends
-import uvicorn
+import db_models
+from db_models import WorkdayDBModel
+from db_schemas import WorkdayRequestSchema
 
 from db_database import SessionLocal, engine
-import db_models
-from db_schemas import WorkdayRequestSchema
-from db_models import WorkdayDBModel
 
-from workorder.app.helper import logging
+import uvicorn
+from fastapi import FastAPI, Depends
+from sqlalchemy.orm import Session
 
-logger = logging.getLogger(__name__)
+from logging import critical
+
 
 app = FastAPI()
 db_models.Base.metadata.create_all(bind=engine)
