@@ -28,5 +28,5 @@ ENV DISPLAY=:99
 # Unbuffer python log messages
 ENV PYTHONUNBUFFERED=1
 
-CMD ["python", "test.py"]
-# CMD ["python", "worker_main.py"]
+# CMD ["python", "test.py"]
+CMD ["python", "worker_main.py"]
