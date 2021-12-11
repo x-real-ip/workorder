@@ -9,8 +9,8 @@ services:
       - workorder
     ports:
       - 8050:8000
-    volumes:
-      - ./app:/code/app
+    # volumes:
+    #   - ./app:/code/app
 
 networks:
   workorder:
