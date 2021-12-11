@@ -1,8 +1,8 @@
 FROM python:3.10
 
-WORKDIR /code
+WORKDIR /app/api
 
-COPY ./app/api /code
+COPY ./app/api /app/api
 
 RUN pip install --no-cache-dir --upgrade -r /code/requirements.txt
 
