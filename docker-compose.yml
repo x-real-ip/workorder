@@ -2,7 +2,7 @@
 version: "3.8"
 services:
   prd-workorder-api:
-    image: docker-registry.theautomation.nl/coen/prd-workorder-app:latest
+    image: docker-registry.theautomation.nl/coen/prd-workorder-api:latest
     container_name: prd-workorder-api
     restart: unless-stopped
     networks:
