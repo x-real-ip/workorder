@@ -4,7 +4,7 @@ WORKDIR /app/api
 
 COPY ./app/api /app/api
 
-RUN pip install --no-cache-dir --upgrade -r /code/requirements.txt
+RUN pip install --no-cache-dir --upgrade -r /app/api/requirements.txt
 
 ENV PYTHONUNBUFFERED=1
 
