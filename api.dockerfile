@@ -1,15 +1,11 @@
 FROM python:3.10
 
-WORKDIR /code
+COPY ./app/api /code
 
-COPY ./requirements.txt /code/requirements.txt
+WORKDIR /code
 
 RUN pip install --no-cache-dir --upgrade -r /code/requirements.txt
 
-COPY ./app/api /code/app
-
 ENV PYTHONUNBUFFERED=1
-
-WORKDIR /code/app
 
 CMD ["python", "api_main.py"]
