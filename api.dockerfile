@@ -12,4 +12,4 @@ ENV PYTHONUNBUFFERED=1
 
 WORKDIR /code/app
 
-ENTRYPOINT ["python", "api_main.py"]
+CMD ["python", "api_main.py"]
