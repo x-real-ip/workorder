@@ -58,7 +58,7 @@ yesterday = str(today - datetime.timedelta(days=1))
 
 # Query yesterday's time data from database
 try:
-    db_query_result = query("../db/database.db", yesterday)
+    db_query_result = query("app/db/database.db", yesterday)
     start_time = db_query_result[2]
     end_time = db_query_result[3]
 except TypeError as msg:
