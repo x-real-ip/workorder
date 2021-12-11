@@ -7,7 +7,7 @@ from selenium.webdriver.common.by import By
 from selenium import webdriver
 import sys
 
-from app.helper import logging
+from helper import logging
 
 logger = logging.getLogger(__name__)
 

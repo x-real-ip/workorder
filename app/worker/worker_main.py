@@ -9,7 +9,7 @@ import sys
 import worker_timecalc
 import worker_webdriver
 from worker_query import query
-from app.helper import logging
+from helper import logging
 
 logger = logging.getLogger(__name__)
 
@@ -58,7 +58,7 @@ yesterday = str(today - datetime.timedelta(days=1))
 
 # Query yesterday's time data from database
 try:
-    db_query_result = query("database.db", yesterday)
+    db_query_result = query("../db/database.db", yesterday)
     start_time = db_query_result[2]
     end_time = db_query_result[3]
 except TypeError as msg:
