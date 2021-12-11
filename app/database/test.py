@@ -1,7 +1,7 @@
 import sqlite3
 
 
-con = sqlite3.connect("/app/db/database.db")
+con = sqlite3.connect("database.db")
 cur = con.cursor()
 cur.execute(
     "select * from workdays WHERE date=? ORDER BY id DESC LIMIT 1", ("2021-12-08",))
