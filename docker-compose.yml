@@ -5,6 +5,7 @@ services:
     image: docker-registry.theautomation.nl/coen/prd-workorder-api:latest
     container_name: prd-workorder-api
     restart: unless-stopped
+    env_file: prd-workorder-worker.env
     networks:
       - workorder
     ports:
@@ -12,6 +13,16 @@ services:
     volumes:
       - ./app/database:/app/db
 
+  prd-workorder-worker:
+    image: docker-registry.theautomation.nl/coen/prd-workorder-worker:latest
+    container_name: prd-workorder-api
+    restart: unless-stopped
+    networks:
+      - workorder
+    ports:
+      - 8050:8000
+    volumes:
+      - ./app/database:/app/db
 networks:
   workorder:
     name: workorder
