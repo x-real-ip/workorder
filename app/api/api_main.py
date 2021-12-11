@@ -8,7 +8,7 @@ import db_models
 from db_schemas import WorkdayRequestSchema
 from db_models import WorkdayDBModel
 
-from app_helper import logging
+from workorder.app.helper import logging
 
 logger = logging.getLogger(__name__)
 

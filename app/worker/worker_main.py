@@ -7,9 +7,9 @@ import logging
 import sys
 
 import app_timecalc
-import app_webdriver
-from db_query import query
-from app_helper import logging
+import workorder.app.worker.worker_webdriver as app_webdriver
+from workorder.app.worker.db_query import query
+from workorder.app.helper import logging
 
 logger = logging.getLogger(__name__)
 
