@@ -1,21 +1,8 @@
-FROM python:3.10
+FROM python:3.9.0b4-alpine3.12
+# FROM python:3.10
 
-RUN pip install --upgrade pip
-
-ENV PYTHONUNBUFFERED=1
-
-WORKDIR /app/worker
-
-COPY /app/worker/requirements.txt .
-
-RUN pip install --no-cache-dir --upgrade -r requirements.txt
-
-COPY ./app/worker .
-
-RUN apt-get -y update \
-    && apt-get install -y \
-    cron
+COPY ./app/worker /app/worker
 
 RUN /usr/bin/crontab /app/worker/crontab
 
-CMD /usr/sbin/cron -f -l 8
+CMD /usr/sbin/crond -f -l 8
