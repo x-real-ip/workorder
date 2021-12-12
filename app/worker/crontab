@@ -1,2 +1,2 @@
-* * * * * app/worker/script.sh >> /var/log/script.log
+* * * * * /app/worker/script.sh >> /var/log/script.log
 #
