@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
 # script writtin by Coen Stam
 # version 2021.12.0
 
