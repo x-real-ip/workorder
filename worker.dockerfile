@@ -26,7 +26,7 @@ RUN unzip -qq /tmp/chromedriver.zip chromedriver -d /usr/local/bin/
 # set display port to avoid crash
 ENV DISPLAY=:99
 
-RUN chmod +x crontab
+RUN chmod +x /add/worker
 
 RUN /usr/bin/crontab /app/worker/crontab
 
