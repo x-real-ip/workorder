@@ -1,2 +1,2 @@
-* * * * * python3 /app/worker/worker_main.py > /proc/1/fd/1 2>/proc/1/fd/2
+* * * * * root python3 /app/worker/worker_main.py > /proc/1/fd/1 2>/proc/1/fd/2
 #
