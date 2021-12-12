@@ -1,2 +1,2 @@
-* * * * * /app/worker/test.py
+* * * * * python /app/worker/test.py
 #
