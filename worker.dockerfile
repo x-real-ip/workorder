@@ -1,5 +1,9 @@
-FROM python:3.9.0b4-alpine3.12
-# FROM python:3.10
+#FROM python:3.9.0b4-alpine3.12
+FROM python:3.10
+
+RUN apt-get -y update \
+    && apt-get install -y \
+    crond
 
 COPY ./app/worker /app/worker
 
