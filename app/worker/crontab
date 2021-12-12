@@ -1,2 +1,2 @@
-* * * * * root python3 /app/worker/test.py
+* * * * * /usr/bin/python /app/worker/test.py
 #
