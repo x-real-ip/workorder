@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 # script writtin by Coen Stam
 # version 2021.12.0
 
