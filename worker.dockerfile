@@ -6,7 +6,7 @@ ENV PYTHONUNBUFFERED=1
 
 WORKDIR /app/worker
 
-COPY requirements.txt .
+COPY /app/worker/requirements.txt .
 
 RUN pip install --no-cache-dir --upgrade -r requirements.txt
 
