@@ -1,3 +1,21 @@
+# FROM python:3.10
+
+# # Install Cron
+# RUN apt-get update
+# RUN apt-get -y install cron
+
+# # Add crontab file in the cron directory
+# COPY /app/worker/crontab /etc/cron.d/crontab
+# COPY /app/worker/test.py /app/worker/test.py
+
+# # Give execution rights on the cron job
+# RUN chmod 0644 /etc/cron.d/crontab
+
+# # Apply cron job
+# RUN /usr/bin/crontab /etc/cron.d/crontab
+
+# CMD ["cron", "-f"]
+
 FROM python:3.10
 
 # Install Cron
@@ -5,13 +23,12 @@ RUN apt-get update
 RUN apt-get -y install cron
 
 # Add crontab file in the cron directory
-COPY /app/worker/crontab /etc/cron.d/crontab
-COPY /app/worker/test.py /app/worker/test.py
+COPY /app/worker /app/worker
 
 # Give execution rights on the cron job
-RUN chmod 0644 /etc/cron.d/crontab
+RUN chmod 0644 /app/worker/crontab
 
 # Apply cron job
-RUN /usr/bin/crontab /etc/cron.d/crontab
+RUN /usr/bin/crontab /app/worker/crontab
 
 CMD ["cron", "-f"]
