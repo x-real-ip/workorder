@@ -1,2 +1,2 @@
-* * * * * /usr/bin/python /app/worker/test.py
+* * * * * app/worker/script.sh >> /var/log/script.log
 #

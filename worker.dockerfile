@@ -2,8 +2,7 @@ FROM python:3.9.0b4-alpine3.12
 
 COPY ./app/worker /app/worker
 
-COPY /app/worker/crontab /etc/crontabs/crontab
+RUN chmod 755 /app/worker/script.sh /app/worker/entry.sh
+RUN /usr/bin/crontab /app/worker/crontab
 
-RUN chmod a+x /app/worker/test.py
-
-CMD crond -l 2 -f
+CMD ["/app/worker/entry.sh"]
