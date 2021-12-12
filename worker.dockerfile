@@ -5,5 +5,6 @@ COPY ./app/worker /app/worker
 COPY /app/worker/crontab /etc/crontabs/crontab
 
 RUN chmod +x /app/worker/test.py
+RUN chmod 644 /etc/crontab
 
 CMD crond -l 2 -f
