@@ -21,7 +21,11 @@ driver = webdriver.Chrome(chrome_options=chrome_options)
 
 
 def open_webpage(url):
-    driver.get(url)
+    try:
+        driver.get(url)
+        logger.debug(f"openend: {url}")
+    except Exception:
+        logger.debug(f"can't open: {url}")
 
 
 def login_webpage(username, password):
