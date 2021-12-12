@@ -3,10 +3,11 @@ FROM python:3.10
 
 RUN apt-get -y update \
     && apt-get install -y \
-    crond
+    cron
 
 COPY ./app/worker /app/worker
 
 RUN /usr/bin/crontab /app/worker/crontab
 
-CMD /usr/sbin/crond -f -l 8
+# CMD /usr/sbin/crond -f -l 8
+CMD ["cron", "-f"]
