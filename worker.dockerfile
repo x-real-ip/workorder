@@ -1,18 +1,17 @@
 FROM python:3.10
 
-# Install Cron
-RUN apt-get update
-RUN apt-get -y install cron
+RUN apt-get update && apt-get install -y \
+    cron \
+    unzip 
 
 WORKDIR /app/worker
 
-# Add crontab file in the cron directory
 COPY /app/worker .
 
-# Give execution rights on the cron job
+RUN pip install --no-cache-dir -r requirements.txt
+
 RUN chmod 0644 crontab
 
-# Apply cron job
 RUN /usr/bin/crontab /app/worker/crontab
 
 CMD ["cron", "-f"]
