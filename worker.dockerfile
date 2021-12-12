@@ -18,4 +18,4 @@ RUN apt-get -y update \
 
 RUN /usr/bin/crontab /app/worker/crontab
 
-CMD /usr/sbin/crond -f -l 8
+CMD /usr/sbin/cron -f -l 8
