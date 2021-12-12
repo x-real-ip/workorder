@@ -19,4 +19,4 @@ COPY ./app/worker /app/worker
 RUN /usr/bin/crontab /app/worker/crontab
 
 # CMD /usr/sbin/crond -f -l 8
-CMD ["cron", "-f"]
+CMD ["cron", "-f -l 8"]
