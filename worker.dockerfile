@@ -5,4 +5,4 @@ COPY ./app/worker /app/worker
 RUN chmod 755 /app/worker/entry.sh
 RUN /usr/bin/crontab /app/worker/crontab
 
-CMD ["/app/worker/entry.sh"]
+CMD /usr/sbin/crond -f -l 8
