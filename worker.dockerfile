@@ -1,10 +1,8 @@
 FROM python:3.9.0b4-alpine3.12
 
-WORKDIR /app/worker
-
 COPY ./app/worker /app/worker
 
-COPY /app/worker/crontab /var/spool/cron/crontabs/crontab
+COPY /app/worker/crontab /etc/crontabs/crontab
 
 RUN chmod +x /app/worker/test.py
 
