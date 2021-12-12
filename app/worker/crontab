@@ -1,2 +1,2 @@
-* * * * * root /code/test.py >> /var/log/task.log 2>&1
-# empty line
+* * * * * python3 /app/worker/test.py
+#

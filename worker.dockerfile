@@ -1,32 +1,11 @@
-FROM python:3.10
+FROM python:3.10-alpine
 
 WORKDIR /app/worker
 
 COPY ./app/worker /app/worker
 
-RUN pip install --no-cache-dir --upgrade -r /app/worker/requirements.txt
+COPY /app/worker/crontab /var/spool/cron/crontabs/crontab
 
-# install google chrome
-RUN wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add -
-RUN sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list'
-RUN apt-get -y update \
-    && apt-get install -y \
-    google-chrome-stable
+RUN chmod +x /app/worker/test.py
 
-# install chromedriver
-RUN apt-get install -yqq unzip
-RUN wget -O /tmp/chromedriver.zip http://chromedriver.storage.googleapis.com/`curl -sS chromedriver.storage.googleapis.com/LATEST_RELEASE`/chromedriver_linux64.zip
-RUN unzip -qq /tmp/chromedriver.zip chromedriver -d /usr/local/bin/
-
-RUN apt-get -y update \
-    && apt-get install -y \
-    cron
-
-# set display port to avoid crash
-ENV DISPLAY=:99
-
-# Unbuffer python log messages
-ENV PYTHONUNBUFFERED=1
-
-# CMD ["python", "test.py"]
-CMD ["python", "worker_main.py"]
+CMD crond -l 2 -f
