@@ -1,7 +1,5 @@
 FROM python:3.10
 
-USER root
-
 ENV PYTHONUNBUFFERED=1
 
 RUN apt-get update && apt-get install -y \
@@ -31,4 +29,6 @@ RUN chmod -R 755 /app/worker
 
 RUN crontab /app/worker/crontab
 
-CMD ["cron", "-f"]
+CMD ["./entry.sh"]
+
+# CMD ["cron", "-f"]
