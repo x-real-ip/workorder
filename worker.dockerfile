@@ -27,15 +27,6 @@ ENV DISPLAY=:99
 
 RUN chmod -R 755 /app/worker
 
-# RUN /usr/bin/crontab /app/worker/crontab
-
-# Copy hello-cron file to the cron.d directory
-COPY /app/worker/crontab /etc/cron.d/crontab
- 
-# Give execution rights on the cron job
-RUN chmod 0644 /etc/cron.d/crontab
-
-# Apply cron job
-RUN crontab /etc/cron.d/crontab
+RUN crontab /app/worker/crontab
 
 CMD ["cron", "-f"]
