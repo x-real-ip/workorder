@@ -1,4 +1,4 @@
 #!/bin/bash
-printenv | grep -v "no_proxy" >> /etc/environment
+printenv | > /etc/environment
 
 cron -f
