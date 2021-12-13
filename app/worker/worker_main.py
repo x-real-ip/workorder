@@ -1,4 +1,3 @@
-#!/usr/bin/python3
 # script writtin by Coen Stam
 # version 2021.12.0
 
