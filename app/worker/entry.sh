@@ -1,7 +1,7 @@
 #!/bin/bash
 
-# store env globally for cron.
-printenv | > /etc/environment
+# print env to globally environment for cron.
+printenv | grep -v "no_proxy" >> /etc/environment
 
 # start cron
 cron -f
