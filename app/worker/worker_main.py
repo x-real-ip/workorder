@@ -82,7 +82,7 @@ final_end_time = worker_timecalc.time_round_up(
     *worker_timecalc.split_time(end_time))
 logger.debug(f"using endtime: {final_end_time}")
 
-# Fill in web form
+# Fill in time in web form
 worker_webdriver.fill_in_form(*final_start_time, *final_end_time)
 
 # Click "send"
