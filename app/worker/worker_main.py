@@ -18,7 +18,7 @@ logger.info("started script: %s", os.path.abspath(__file__))
 
 # Check os env variables
 if "WEB_URL" in os.environ:
-    web_url = os.environ("WEB_URL")
+    web_url = os.environ.get("WEB_URL")
     logger.debug(f"using url: {web_url}")
     if web_url == "URL" or web_url == "":
         logger.error(
@@ -28,7 +28,7 @@ else:
         "No URL os env find please check prd-workorder-app.env file")
 
 if "WEB_USERNAME" in os.environ:
-    web_username = os.environ("WEB_USERNAME")
+    web_username = os.environ.get("WEB_USERNAME")
     logger.debug(f"using username: {web_username}")
     if web_username == "username" or web_username == "":
         logger.error(
@@ -38,7 +38,7 @@ else:
         "No username os env find please check prd-workorder-app.env file")
 
 if "WEB_PASSWORD" in os.environ:
-    web_password = os.environ("WEB_PASSWORD")
+    web_password = os.environ.get("WEB_PASSWORD")
     if web_password == "password" or web_password == "":
         logger.error(
             "Please set a correct password in the prd-workorder-app.env file")
