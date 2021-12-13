@@ -44,7 +44,7 @@ def login_webpage(username, password):
 def open_workorder(date):
     try:
         order = WebDriverWait(driver, 3).until(EC.presence_of_element_located(
-            (By.XPATH, "//div/p[contains(text(),'{}') and preceding-sibling::h6[contains(text(),'dienst') or contains(text(),'Operator') or contains(text(),'motorkap')]]".format(date))))
+            (By.XPATH, "//div/p[contains(text(),'{}') and preceding-sibling::h6[contains(text(),'dienst') or contains(text(),'Weekenddienst') or contains(text(),'Operator') or contains(text(),'motorkap')]]".format(date))))
         order.click()
     except Exception:
         logger.info(f"no workorder was found, closing webdriver")
