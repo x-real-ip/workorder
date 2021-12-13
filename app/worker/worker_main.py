@@ -46,7 +46,6 @@ else:
     logger.error(
         "No password os env find please check prd-workorder-app.env file")
 
-
 # Webdriver open URL
 worker_webdriver.open_webpage(web_url)
 
