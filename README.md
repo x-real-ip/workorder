@@ -20,12 +20,11 @@ git clone https://github.com/theautomation/workorder.git
 
 2. Change "prd-workorder-app.env.example to "prd-workorder-app.env".
 
-````bash
+```bash
 mv ./prd-workorder-app.env.example ./prd-workorder-app.env
-
 ```
+
 3. Fill in the URL, username and password in the "prd-workorder-app.env" file.
-````
 
 ```dosini
 WEB_URL="https://example.com"
