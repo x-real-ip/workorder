@@ -30,5 +30,3 @@ RUN chmod -R 755 /app/worker
 RUN crontab /app/worker/crontab
 
 CMD ["./entry.sh"]
-
-# CMD ["cron", "-f"]
