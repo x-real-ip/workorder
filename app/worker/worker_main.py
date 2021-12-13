@@ -85,8 +85,8 @@ logger.debug(f"using endtime: {final_end_time}")
 # Fill in web form
 worker_webdriver.fill_in_form(*final_start_time, *final_end_time)
 
-# # Click "send"
-# worker_webdriver.send_workorder()
+# Click "send"
+worker_webdriver.send_workorder()
 
-# # Quit webdriver
-# worker_webdriver.quit()
+# Quit webdriver
+worker_webdriver.quit()
