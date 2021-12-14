@@ -17,8 +17,10 @@ services:
   prd-workorder-worker:
     image: docker-registry.theautomation.nl/coen/prd-workorder-worker:latest
     container_name: prd-workorder-worker
-    env_file: prd-workorder-worker.env
     restart: unless-stopped
+    env_file: prd-workorder-worker.env
+    networks:
+      - workorder
     volumes:
       - ./app/database:/app/db
       - ./app/log:/app/log
