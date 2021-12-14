@@ -15,7 +15,7 @@ from worker_query import query
 import logging
 import logging.config
 
-logging.config.fileConfig("logging.ini")
+logging.config.fileConfig("/app/logging.ini")
 logger = logging.getLogger(__name__)
 
 logger.info("started script")
