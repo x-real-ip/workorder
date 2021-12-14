@@ -13,9 +13,9 @@ import worker_webdriver
 from worker_query import query
 
 import logging
-from logging.config import fileConfig
+import logging.config
 
-fileConfig("logging.ini")
+logging.config.fileConfig("logging.ini")
 logger = logging.getLogger(__name__)
 
 logger.info("started script")

@@ -8,9 +8,9 @@ from selenium import webdriver
 import sys
 
 import logging
-from logging.config import fileConfig
+import logging.config
 
-fileConfig("logging.ini")
+logging.config.fileConfig("logging.ini")
 logger = logging.getLogger(__name__)
 
 # Selenium

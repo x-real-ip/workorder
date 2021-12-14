@@ -8,9 +8,9 @@ from fastapi import FastAPI, Depends
 from sqlalchemy.orm import Session
 
 import logging
-from logging.config import fileConfig
+import logging.config
 
-fileConfig("logging.ini")
+logging.config.fileConfig("logging.ini")
 logger = logging.getLogger(__name__)
 
 
