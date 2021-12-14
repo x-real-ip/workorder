@@ -10,7 +10,8 @@ import sys
 import logging
 import logging.config
 
-logging.config.fileConfig("/app/worker/logging.ini")
+logging.config.fileConfig("/app/worker/logging.ini",
+                          disable_existing_loggers=False)
 logger = logging.getLogger(__name__)
 
 # Selenium
