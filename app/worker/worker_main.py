@@ -11,7 +11,6 @@ import sys
 import worker_timecalc
 import worker_webdriver
 from worker_query import query
-from helper import logging
 
 import logging
 from logging.config import fileConfig

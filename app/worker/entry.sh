@@ -5,7 +5,3 @@ printenv | grep -v "no_proxy" >> /etc/environment
 
 # Start cron
 cron -f
-
-echo "The following crontab is set:"
-
-cat /app/worker/crontab
