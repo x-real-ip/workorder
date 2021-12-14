@@ -2,7 +2,7 @@ FROM python:3.10
 
 WORKDIR /app/api
 
-RUN mkdir -p /app/db
+RUN mkdir -p /app/db /app/log
 
 COPY ./app/api /app/api
 
