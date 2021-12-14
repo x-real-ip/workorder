@@ -1,5 +1,10 @@
 # Workorder
 
+[![Build Status](https://drone.theautomation.nl/api/badges/theautomation/workorder/status.svg)](https://drone.theautomation.nl/theautomation/workorder)
+![GitHub repo size](https://img.shields.io/github/repo-size/theautomation/workorder?logo=Github)
+![GitHub commit activity](https://img.shields.io/github/commit-activity/y/theautomation/workorder?logo=github)
+![GitHub last commit (branch)](https://img.shields.io/github/last-commit/theautomation/workorder/main?logo=github)
+
 ## Requirements
 
 - a server running [Docker](https://www.docker.com/).
