@@ -23,19 +23,7 @@ depends_on:
   - validate
 
 steps:
-  # - name: publish api image
-  #   image: plugins/docker
-  #   settings:
-  #     username:
-  #       from_secret: docker-registry-username
-  #     password:
-  #       from_secret: docker-registry-password
-  #     registry: docker-registry.theautomation.nl
-  #     repo: docker-registry.theautomation.nl/coen/prd-${DRONE_REPO_NAME}-api
-  #     dockerfile: api.dockerfile
-  #     auto_tag: true
-
-  - name: publish worker image
+  - name: publish api image
     image: plugins/docker
     settings:
       username:
@@ -43,9 +31,21 @@ steps:
       password:
         from_secret: docker-registry-password
       registry: docker-registry.theautomation.nl
-      repo: docker-registry.theautomation.nl/coen/prd-${DRONE_REPO_NAME}-worker
-      dockerfile: worker.dockerfile
+      repo: docker-registry.theautomation.nl/coen/prd-${DRONE_REPO_NAME}-api
+      dockerfile: api.dockerfile
       auto_tag: true
+
+  # - name: publish worker image
+  #   image: plugins/docker
+  #   settings:
+  #     username:
+  #       from_secret: docker-registry-username
+  #     password:
+  #       from_secret: docker-registry-password
+  #     registry: docker-registry.theautomation.nl
+  #     repo: docker-registry.theautomation.nl/coen/prd-${DRONE_REPO_NAME}-worker
+  #     dockerfile: worker.dockerfile
+  #     auto_tag: true
 
 ---
 kind: pipeline
