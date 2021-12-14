@@ -1,5 +1,7 @@
 #!/usr/bin/python
 # script writtin by Coen Stam
+# https://github.com/theautomation
+# github@theautomation.nl
 # version 2021.12.0
 
 import datetime
@@ -14,7 +16,7 @@ from helper import logging
 import logging
 from logging.config import fileConfig
 
-fileConfig("/app/logging.ini")
+fileConfig("logging.ini")
 logger = logging.getLogger(__name__)
 
 logger.info("started script")
@@ -49,15 +51,11 @@ else:
     logger.error(
         "No password os env find please check prd-workorder-app.env file")
 
-# Webdriver open URL
-worker_webdriver.open_webpage(web_url)
-
-# Login with username and password
-worker_webdriver.login_webpage(web_username, web_password)
-
 # Get yesterday date as string
 today = datetime.date.today()
 yesterday = str(today - datetime.timedelta(days=1))
+# Use date converter e.g. "2021-01-01 -> "1 Jan"
+converted_date = worker_timecalc.convert_date(yesterday)
 
 # Query yesterday's time data from database
 try:
@@ -65,24 +63,29 @@ try:
     start_time = db_query_result[2]
     end_time = db_query_result[3]
 except TypeError as msg:
-    logger.info(f"can't find values in database: {msg}")
+    logger.warning(f"can't find values in database: {msg}")
     logger.info("exit worker")
     sys.exit()
-
-# Use date converter e.g. "2021-01-01 -> "1 Jan"
-converted_date = worker_timecalc.convert_date(yesterday)
-
-# Open workorder that contains converted date if not exists it will exit
-worker_webdriver.open_workorder(converted_date)
 
 # Round down and round up time
 final_start_time = worker_timecalc.time_round_down(
     *worker_timecalc.split_time(start_time))
-logger.debug(f"using starttime: {final_start_time}")
+logger.info(
+    f"using starttime: {final_start_time} for workorder: {converted_date}")
 
 final_end_time = worker_timecalc.time_round_up(
     *worker_timecalc.split_time(end_time))
-logger.debug(f"using endtime: {final_end_time}")
+logger.info(
+    f"using endtime: {final_end_time} for workorder: {converted_date}")
+
+# Webdriver open URL
+worker_webdriver.open_webpage(web_url)
+
+# Login with username and password
+worker_webdriver.login_webpage(web_username, web_password)
+
+# Open workorder that contains converted date if not exists it will exit
+worker_webdriver.open_workorder(converted_date)
 
 # Fill in time in web form
 worker_webdriver.fill_in_form(*final_start_time, *final_end_time)
