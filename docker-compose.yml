@@ -11,6 +11,7 @@ services:
       - 8050:8000
     volumes:
       - ./app/database:/app/db
+      - ./app/log:/app/log
       - /etc/localtime:/etc/localtime:ro
 
   prd-workorder-worker:
@@ -20,6 +21,7 @@ services:
     restart: unless-stopped
     volumes:
       - ./app/database:/app/db
+      - ./app/log:/app/log
       - /etc/localtime:/etc/localtime:ro
 
 networks:
