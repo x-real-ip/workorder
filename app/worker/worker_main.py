@@ -7,7 +7,7 @@
 import datetime
 import os
 import sys
-import worker_webdriver
+# import worker_webdriver
 import worker_timecalc
 
 from worker_query import query
@@ -83,20 +83,20 @@ final_end_time = worker_timecalc.time_round_up(
 logger.info(
     f"using endtime: {final_end_time} for workorder: {converted_date}")
 
-# Webdriver open URL
-worker_webdriver.open_webpage(web_url)
+# # Webdriver open URL
+# worker_webdriver.open_webpage(web_url)
 
-# Login with username and password
-worker_webdriver.login_webpage(web_username, web_password)
+# # Login with username and password
+# worker_webdriver.login_webpage(web_username, web_password)
 
-# Open workorder that contains converted date if not exists it will exit
-worker_webdriver.open_workorder(converted_date)
+# # Open workorder that contains converted date if not exists it will exit
+# worker_webdriver.open_workorder(converted_date)
 
-# Fill in time in web form
-worker_webdriver.fill_in_form(*final_start_time, *final_end_time)
+# # Fill in time in web form
+# worker_webdriver.fill_in_form(*final_start_time, *final_end_time)
 
-# Click "send"
-worker_webdriver.send_workorder()
+# # Click "send"
+# worker_webdriver.send_workorder()
 
-# Quit webdriver
-worker_webdriver.quit()
+# # Quit webdriver
+# worker_webdriver.quit()
