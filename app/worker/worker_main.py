@@ -7,9 +7,9 @@
 import datetime
 import os
 import sys
-
-import worker_timecalc
 import worker_webdriver
+import worker_timecalc
+
 from worker_query import query
 
 import logging
@@ -27,9 +27,11 @@ if "WEB_URL" in os.environ:
     if web_url == "URL" or web_url == "":
         logger.error(
             "Please set a correct URL in the prd-workorder-app.env file")
+        sys.exit()
 else:
     logger.error(
         "No URL os env find please check prd-workorder-app.env file")
+    sys.exit()
 
 if "WEB_USERNAME" in os.environ:
     web_username = os.environ.get("WEB_USERNAME")
@@ -37,18 +39,22 @@ if "WEB_USERNAME" in os.environ:
     if web_username == "username" or web_username == "":
         logger.error(
             "Please set a correct username in the prd-workorder-app.env file")
+        sys.exit()
 else:
     logger.error(
         "No username os env find please check prd-workorder-app.env file")
+    sys.exit()
 
 if "WEB_PASSWORD" in os.environ:
     web_password = os.environ.get("WEB_PASSWORD")
     if web_password == "password" or web_password == "":
         logger.error(
             "Please set a correct password in the prd-workorder-app.env file")
+        sys.exit()
 else:
     logger.error(
         "No password os env find please check prd-workorder-app.env file")
+    sys.exit()
 
 # Get yesterday date as string
 today = datetime.date.today()
