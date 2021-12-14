@@ -13,6 +13,8 @@ WORKDIR /app/worker
 
 COPY /app/worker .
 
+COPY /app/logging.ini .
+
 RUN pip install --no-cache-dir --upgrade -r requirements.txt
 
 # install google chrome

@@ -1,13 +1,15 @@
 FROM python:3.10
 
-WORKDIR /app/api
+ENV PYTHONUNBUFFERED=1
 
 RUN mkdir -p /app/db /app/log
 
-COPY ./app/api /app/api
+WORKDIR /app/api
 
-RUN pip install --no-cache-dir --upgrade -r /app/api/requirements.txt
+COPY ./app/api .
 
-ENV PYTHONUNBUFFERED=1
+COPY /app/logging.ini .
+
+RUN pip install --no-cache-dir --upgrade -r requirements.txt
 
 CMD ["python", "api_main.py"]
