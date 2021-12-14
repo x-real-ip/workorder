@@ -68,6 +68,8 @@ try:
     db_query_result = query("/app/db/database.db", yesterday)
     start_time = db_query_result[2]
     end_time = db_query_result[3]
+    logger.info(
+        f"found worktime in database on day {yesterday}. Start time: {start_time} End time: {end_time}")
 except TypeError as msg:
     logger.warning(f"can't find values in database: {msg}")
     logger.info("exit worker")

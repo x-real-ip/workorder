@@ -39,6 +39,6 @@ WEB_PASSWORD="password"
 
 ## To Do
 
-- Take loglevel from env consol and file
+- ![Take loglevel from env consol and file](https://gist.github.com/juanpabloaj/3e6a41f683c1767c17824811db01165b#file-logging_env-py)
 - Notification when workorder has completed
 - How many days back in time to use (db query and selenium workorder text to find)

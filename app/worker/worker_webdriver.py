@@ -28,7 +28,7 @@ def open_webpage(url):
         driver.get(url)
         logger.debug(f"openend: {url}")
     except Exception:
-        logger.debug(f"can't open: {url}")
+        logger.error(f"can't open: {url}")
 
 
 def login_webpage(username, password):
