@@ -4,7 +4,6 @@
 
 import datetime
 import os
-import logging
 import sys
 
 import worker_timecalc
@@ -12,9 +11,13 @@ import worker_webdriver
 from worker_query import query
 from helper import logging
 
+import logging
+from logging.config import fileConfig
+
+fileConfig('../logging.ini')
 logger = logging.getLogger(__name__)
 
-logger.info("started script: %s", os.path.abspath(__file__))
+logger.info("started script")
 
 # Check os env variables
 if "WEB_URL" in os.environ:

@@ -1,14 +1,17 @@
 import db_models
 from db_models import WorkdayDBModel
 from db_schemas import WorkdayRequestSchema
-
 from db_database import SessionLocal, engine
 
 import uvicorn
 from fastapi import FastAPI, Depends
 from sqlalchemy.orm import Session
 
-from logging import critical
+import logging
+from logging.config import fileConfig
+
+fileConfig('logging.ini')
+logger = logging.getLogger(__name__)
 
 
 app = FastAPI()
@@ -37,4 +40,4 @@ def workday_entry(workday_request: WorkdayRequestSchema, db: Session = Depends(g
 
 
 if __name__ == "__main__":
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+    uvicorn.run(app, host="0.0.0.0", port=8000, log_config="logging.ini")

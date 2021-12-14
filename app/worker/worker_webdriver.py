@@ -7,8 +7,10 @@ from selenium.webdriver.common.by import By
 from selenium import webdriver
 import sys
 
-from helper import logging
+import logging
+from logging.config import fileConfig
 
+fileConfig('../logging.ini')
 logger = logging.getLogger(__name__)
 
 # Selenium
