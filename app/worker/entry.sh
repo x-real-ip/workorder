@@ -1,5 +1,4 @@
 # #!/bin/bash
-set -e
 
 # Print env to globally environment for cron
 printenv | grep -v "no_proxy" >> /etc/environment
