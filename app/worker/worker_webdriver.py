@@ -10,7 +10,7 @@ import sys
 import logging
 from logging.config import fileConfig
 
-fileConfig('../logging.ini')
+fileConfig("/app/logging.ini")
 logger = logging.getLogger(__name__)
 
 # Selenium

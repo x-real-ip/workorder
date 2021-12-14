@@ -10,7 +10,7 @@ from sqlalchemy.orm import Session
 import logging
 from logging.config import fileConfig
 
-fileConfig('logging.ini')
+fileConfig("/app/logging.ini")
 logger = logging.getLogger(__name__)
 
 
@@ -40,4 +40,4 @@ def workday_entry(workday_request: WorkdayRequestSchema, db: Session = Depends(g
 
 
 if __name__ == "__main__":
-    uvicorn.run(app, host="0.0.0.0", port=8000, log_config="logging.ini")
+    uvicorn.run(app, host="0.0.0.0", port=8000, log_config="/app/logging.ini")
