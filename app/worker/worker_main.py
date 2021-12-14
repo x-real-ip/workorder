@@ -66,7 +66,7 @@ try:
     end_time = db_query_result[3]
 except TypeError as msg:
     logger.info(f"can't find values in database: {msg}")
-    logger.info(f"stopping worker")
+    logger.info("exit worker")
     sys.exit()
 
 # Use date converter e.g. "2021-01-01 -> "1 Jan"
