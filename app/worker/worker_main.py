@@ -14,14 +14,13 @@ from worker_query import query
 
 import logging
 import logging.config
+# Path must be absolute because cron runs the script
+logging.config.fileConfig("/app/worker/logging.ini",
+                          disable_existing_loggers=False)
+logger = logging.getLogger(__name__)
 
 
 def main():
-
-    # Path must be absolute because cron runs the script
-    logging.config.fileConfig("/app/worker/logging.ini",
-                              disable_existing_loggers=False)
-    logger = logging.getLogger(__name__)
 
     logger.info("script started")
 
@@ -89,6 +88,9 @@ def main():
         *worker_timecalc.split_time(end_time))
     logger.info(
         f"using endtime: {final_end_time} for workorder: {converted_date}")
+
+    # Load webdriver options
+    worker_webdriver.webdriver()
 
     # Webdriver open URL
     worker_webdriver.open_webpage(web_url)
