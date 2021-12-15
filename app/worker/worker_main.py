@@ -14,6 +14,11 @@ import worker_timecalc
 from worker_query import query
 
 import logging
+import logging.config
+
+# Path must be absolute because cron runs the script
+logging.config.fileConfig("/app/worker/logging.ini",
+                          disable_existing_loggers=False)
 logger = logging.getLogger(__name__)
 
 
