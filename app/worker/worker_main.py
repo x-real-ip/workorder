@@ -92,7 +92,7 @@ def main():
         f"using endtime: {final_end_time} for workorder: {converted_date}")
 
     # Load webdriver options
-    worker_webdriver.webdriver()
+    worker_webdriver.setup_driver()
 
     # Webdriver open URL
     worker_webdriver.open_webpage(web_url)
