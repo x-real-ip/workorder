@@ -2,6 +2,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 from selenium import webdriver
@@ -11,17 +12,17 @@ import sys
 import logging
 import logging.config
 
-# Path must be absolute because cron runs the script
+# Path must be absolute for cron
 logging.config.fileConfig("/app/worker/logging.ini",
                           disable_existing_loggers=False)
 logger = logging.getLogger(__name__)
-
 
 options = Options()
 options.add_argument('--headless')
 options.add_argument('--no-sandbox')
 options.add_argument('--disable-dev-shm-usage')
-driver = webdriver.Chrome(ChromeDriverManager().install(), options=options)
+install = Service(ChromeDriverManager().install())
+driver = webdriver.Chrome(service=install, options=options)
 
 
 def open_webpage(url):
