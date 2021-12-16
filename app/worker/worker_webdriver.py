@@ -17,11 +17,11 @@ logging.config.fileConfig("/app/worker/logging.ini",
                           disable_existing_loggers=False)
 logger = logging.getLogger(__name__)
 
+install = Service(ChromeDriverManager().install())
 options = Options()
 options.add_argument('--headless')
 options.add_argument('--no-sandbox')
 options.add_argument('--disable-dev-shm-usage')
-install = Service(ChromeDriverManager().install())
 driver = webdriver.Chrome(service=install, options=options)
 
 
