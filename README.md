@@ -32,9 +32,17 @@ mv ./prd-workorder-app.env.example ./prd-workorder-app.env
 3. Fill in the URL, username and password in the "prd-workorder-app.env" file.
 
 ```dosini
+# URL to open
 WEB_URL="https://example.com"
+
+# Credentials for WEB_URL login
 WEB_USERNAME="username"
 WEB_PASSWORD="password"
+
+# Save a .png image of a workorder with entered time
+# Set to true to save or set false or empty to not save a image
+# path where images will be saved in docker container is '/app/log'
+SAVE_IMAGE=false
 ```
 
 ## To Do

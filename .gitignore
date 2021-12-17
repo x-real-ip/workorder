@@ -1,6 +1,7 @@
 *.log
 *.db
 *.env
+*.png
 
 pyvenv.cfg
 secrets.*

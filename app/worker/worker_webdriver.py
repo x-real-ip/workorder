@@ -1,3 +1,5 @@
+import time
+from selenium.webdriver.chrome.webdriver import WebDriver
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.support.ui import WebDriverWait
@@ -8,7 +10,7 @@ from selenium.webdriver.common.by import By
 from selenium import webdriver
 from webdriver_manager.chrome import ChromeDriverManager
 import sys
-
+import os
 import logging
 import logging.config
 
@@ -19,9 +21,10 @@ logger = logging.getLogger(__name__)
 
 install = Service(ChromeDriverManager().install())
 options = Options()
-options.add_argument('--headless')
-options.add_argument('--no-sandbox')
-options.add_argument('--disable-dev-shm-usage')
+options.add_argument("--headless")
+options.add_argument("--no-sandbox")
+options.add_argument("--disable-dev-shm-usage")
+options.add_argument("--window-size=720,930")
 driver = webdriver.Chrome(service=install, options=options)
 
 
@@ -66,7 +69,7 @@ def fill_in_form(start_hour, start_minute, end_hour, end_minute):
     start_minutes = driver.find_element(
         By.XPATH, '//input[2][@class="time-input minutes"]')
     start_minutes.send_keys(start_minute)
-    logger.info(f"start time has filled in")
+    logger.info(f"start time has filled in {start_hour}:{start_minute}")
     end_hours = driver.find_element(
         By.XPATH, "//label[contains(text(),'End')]/following-sibling::span/input[@class='time-input hours']")
     end_hours.send_keys(Keys.BACKSPACE)
@@ -74,18 +77,35 @@ def fill_in_form(start_hour, start_minute, end_hour, end_minute):
     end_minutes = driver.find_element(
         By.XPATH, "//label[contains(text(),'End')]/following-sibling::span/input[@class='time-input minutes']")
     end_minutes.send_keys(end_minute)
-    logger.info(f"end time has filled in")
+    logger.info(f"end time has filled in {end_hour}:{end_minute}")
+
+
+def goto_send():
+    actions = ActionChains(driver)
+    actions.send_keys(Keys.TAB * 7)
+    actions.perform()
+    time.sleep(5)
+
+
+def screenshot(date_filename):
+    screenshot = os.environ.get('SAVE_IMAGE', "false")
+    if screenshot == "true":
+        path = (f"/app/log/workorder_{date_filename}.png")
+        try:
+            driver.save_screenshot(path)
+            logger.info(
+                f"image of entered workorder saved. location: {path}")
+        except Exception:
+            logger.error("can't save image of workorder")
 
 
 def send_workorder():
     try:
         actions = ActionChains(driver)
-        actions.send_keys(Keys.TAB * 7)
         actions.send_keys(Keys.ENTER)
         actions.perform()
     except Exception:
-        logger.error(
-            "workorder was not being send")
+        logger.error("workorder was not being send")
         sys.exit()
     else:
         logger.info("workorder send successfully")
