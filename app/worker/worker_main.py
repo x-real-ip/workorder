@@ -102,6 +102,8 @@ def main():
 
     worker_webdriver.fill_in_form(*final_start_time, *final_end_time)
 
+    worker_webdriver.goto_send()
+
     worker_webdriver.screenshot(yesterday)
 
     worker_webdriver.send_workorder()
