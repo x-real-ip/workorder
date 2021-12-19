@@ -40,8 +40,11 @@ def check_env(var):
         if var in os.environ:
             if os.environ[var] == "":
                 logging.error(f'{var} is empty, please set a value')
+                sys.exit()
         else:
-            logging.error(f'{var} does not exist, please setup this env variable')
+            logging.error(
+                f'{var} does not exist, please setup this env variable')
+            sys.exit()
 
 
 def query(db_location, date):
