@@ -231,7 +231,7 @@ def main():
     try:
         actions = ActionChains(driver)
         actions.send_keys(Keys.ENTER)
-        # actions.perform()
+        actions.perform()
     except Exception:
         logger.error("workorder was not being send")
         sys.exit()
