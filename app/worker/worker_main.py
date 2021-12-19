@@ -1,7 +1,7 @@
-#!/usr/bin/python
+#!/usr/bin/env python3
+#
 # script writtin by Coen Stam
 # https://github.com/theautomation
-# github@theautomation.nl
 
 import re
 import os
