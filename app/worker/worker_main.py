@@ -22,9 +22,13 @@ from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.support import expected_conditions as EC
 
+base_path = '/app'
+worker_path = base_path + '/worker'
+log_path = base_path + '/log'
+db_path = base_path + '/db'
 
-# Log.ini Path must be absolute for cron
-logging.config.fileConfig('/app/worker/logging.ini',
+
+logging.config.fileConfig(worker_path + '/logging.ini',
                           disable_existing_loggers=False)
 logger = logging.getLogger(__name__)
 
@@ -73,9 +77,9 @@ def time_round_up(hour, minute):
     return (f"{hour:02d}"), (f"{minute:02d}")
 
 
-def query(database, date):
+def query(db_location, date):
     """Return values from database based on date"""
-    con = sqlite3.connect(database)
+    con = sqlite3.connect(db_location)
     cur = con.cursor()
     cur.execute(
         "select * from workdays WHERE date=? ORDER BY id DESC LIMIT 1", (date,))
@@ -125,7 +129,7 @@ def main():
     # Query yesterday's time data from database
     try:
         yesterday = str(datetime.date.today() - datetime.timedelta(days=1))
-        db_query_result = query('/app/db/database.db', yesterday)
+        db_query_result = query(db_path + '/database.db', yesterday)
         start_time = db_query_result[2]
         end_time = db_query_result[3]
         logger.info(
@@ -219,7 +223,7 @@ def main():
     # Screenshot
     screenshot = os.environ.get('SAVE_IMAGE', "false")
     if screenshot == "true":
-        path = (f"/app/log/workorder_{yesterday}.png")
+        path = (log_path + '/workorder_' + yesterday + '.png')
         try:
             driver.save_screenshot(path)
             logger.info(
