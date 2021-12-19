@@ -142,10 +142,8 @@ def main():
 
     try:
         # Round down and round up time
-        final_start_time = time_round_down(
-            *split_time(start_time))
-        final_end_time = time_round_up(
-            *split_time(end_time))
+        final_start_time = time_round_down(*split_time(start_time))
+        final_end_time = time_round_up(*split_time(end_time))
         logger.info(
             f"worktime for workorder: {yesterday} is rounded up and down:")
         logger.info(

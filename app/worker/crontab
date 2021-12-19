@@ -1,4 +1,3 @@
-# every day at 07:00. more info at https://crontab.guru
-# 0 7 * * * /usr/local/bin/python3 /app/worker/worker_main.py > /proc/1/fd/1 2>/proc/1/fd/2
-* * * * * /usr/local/bin/python3 /app/worker/worker_main.py > /proc/1/fd/1 2>/proc/1/fd/2
+# every day at 07:00. https://crontab.guru
+0 7 * * * /usr/local/bin/python3 /app/worker/worker_main.py > /proc/1/fd/1 2>/proc/1/fd/2
 #
