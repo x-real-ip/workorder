@@ -27,10 +27,32 @@ worker_path = base_path + '/worker'
 log_path = base_path + '/log'
 db_path = base_path + '/db'
 
+env_variables = ('WEB_URL', 'WEB_USERNAME', 'WEB_PASSWORD')
+
 
 logging.config.fileConfig(worker_path + '/logging.ini',
                           disable_existing_loggers=False)
 logger = logging.getLogger(__name__)
+
+
+def check_env(var):
+    for var in env_variables:
+        if var in os.environ:
+            if os.environ[var] == "":
+                print(f'{var} is empty, please set a value')
+        else:
+            print(f'{var} does not exist, please setup this env variable')
+
+
+def query(db_location, date):
+    """Return values from database based on date"""
+    con = sqlite3.connect(db_location)
+    cur = con.cursor()
+    cur.execute(
+        "select * from workdays WHERE date=? ORDER BY id DESC LIMIT 1", (date,))
+    result = (cur.fetchone())
+    con.close()
+    return result
 
 
 def convert_date(date_input):
@@ -77,54 +99,10 @@ def time_round_up(hour, minute):
     return (f"{hour:02d}"), (f"{minute:02d}")
 
 
-def query(db_location, date):
-    """Return values from database based on date"""
-    con = sqlite3.connect(db_location)
-    cur = con.cursor()
-    cur.execute(
-        "select * from workdays WHERE date=? ORDER BY id DESC LIMIT 1", (date,))
-    result = (cur.fetchone())
-    con.close()
-    return result
-
-
 def main():
 
     # Check env variables
-    if 'WEB_URL' in os.environ:
-        web_url = os.environ.get('WEB_URL')
-        logger.debug(f"using url: {web_url}")
-        if web_url == 'URL' or web_url == "":
-            logger.error(
-                "Please set a correct URL in the prd-workorder-app.env file")
-            sys.exit()
-    else:
-        logger.error(
-            "No URL os env find please check prd-workorder-app.env file")
-        sys.exit()
-
-    if 'WEB_USERNAME' in os.environ:
-        web_username = os.environ.get('WEB_USERNAME')
-        logger.debug(f"using username: {web_username}")
-        if web_username == "username" or web_username == "":
-            logger.error(
-                "Please set a correct username in the prd-workorder-app.env file")
-            sys.exit()
-    else:
-        logger.error(
-            "No username os env find please check prd-workorder-app.env file")
-        sys.exit()
-
-    if 'WEB_PASSWORD' in os.environ:
-        web_password = os.environ.get('WEB_PASSWORD')
-        if web_password == "password" or web_password == "":
-            logger.error(
-                "Please set a correct password in the prd-workorder-app.env file")
-            sys.exit()
-    else:
-        logger.error(
-            "No password os env find please check prd-workorder-app.env file")
-        sys.exit()
+    check_env(env_variables)
 
     # Query yesterday's time data from database
     try:
@@ -162,14 +140,18 @@ def main():
 
     # Open webpage
     try:
+        web_url = os.environ.get('WEB_URL')
         driver.get(web_url)
         logger.debug(f"openend: {web_url}")
     except Exception:
         logger.debug(f"can't open: {web_url}")
 
     # Login
+    web_username = os.environ.get('WEB_USERNAME')
     driver.find_element(By.TAG_NAME, 'input').send_keys(web_username)
     driver.find_element(By.TAG_NAME, 'button').click()
+
+    web_password = os.environ.get('WEB_PASSWORD')
     driver.find_element(By.TAG_NAME, 'input').send_keys(web_password)
     driver.find_element(
         By.XPATH, '//*[@id="app"]/div/div[2]/div[1]/div[2]/button[2]').click()
@@ -180,7 +162,7 @@ def main():
     # Search workorder based on converted date string and text in workorder
     try:
         order = WebDriverWait(driver, 3).until(EC.presence_of_element_located(
-            (By.XPATH, "//div/p[contains(text(),'{}') and preceding-sibling::h6[contains(text(),'dienst') or contains(text(),'Weekenddienst') or contains(text(),'Operator') or contains(text(),'motorkap')]]".format(converted_date))))
+            (By.XPATH, "// div/p[contains(text(), '{}')and preceding-sibling::h6[contains(text(), 'dienst') or contains(text(), 'Weekenddienst') or contains(text(), 'Operator') or contains(text(), 'motorkap')]]".format(converted_date))))
         order.click()
     except Exception:
         logger.info(f"no workorder was found, closing webdriver")
@@ -213,9 +195,7 @@ def main():
         f"endtime: {final_end_time[0]}:{final_end_time[1]} has filled in")
 
     # Go to send button
-    actions = ActionChains(driver)
-    actions.send_keys(Keys.TAB * 7)
-    actions.perform()
+    ActionChains(driver).send_keys(Keys.TAB * 7).perform()
     time.sleep(5)
 
     # Screenshot
@@ -231,9 +211,7 @@ def main():
 
     # Send
     try:
-        actions = ActionChains(driver)
-        actions.send_keys(Keys.ENTER)
-        actions.perform()
+        ActionChains(driver).send_keys(Keys.ENTER).perform()
     except Exception:
         logger.error("workorder was not being send")
         sys.exit()
