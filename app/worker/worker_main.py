@@ -162,15 +162,30 @@ def main():
     # Convert date e.g. "2021-01-01 -> "Jan 1"
     converted_date = convert_date(yesterday)
 
-    # Search workorder based on converted date string and text in workorder
-    try:
-        order = WebDriverWait(driver, 3).until(EC.presence_of_element_located(
-            (By.XPATH, "//div/p[contains(text(),'{}') and preceding-sibling::h6[contains(text(),'dienst') or contains(text(),'Weekenddienst') or contains(text(),'Operator') or contains(text(),'motorkap')]]".format(converted_date))))
-        order.click()
-    except Exception:
-        logger.info(f"no workorder was found, closing webdriver")
-        driver.quit()
+    # Get word list from env variable
+    word_list = os.environ.get('WORKORDER_TEXT').split(", ")
+
+    # Search workorder that contains converted date and a word from word list
+    found_word = False
+    for word in word_list:
+        try:
+            order = WebDriverWait(driver, 5).until(EC.presence_of_element_located(
+                (By.XPATH, "//div/p[contains(text(),'{}') and preceding-sibling::h6[contains(text(),'{}')]]".format(converted_date, word))))
+            if order != None:
+                logger.info(f"found workorder with word: {word}")
+                found_word = True
+                break
+        except:
+            logger.debug(
+                f"tried to find workorder with word: {word} but was not found")
+
+    # Exit if no workorder is found
+    if found_word == False:
+        logger.warning("no workorder is found")
         sys.exit()
+
+    # Open workorder
+    order.click()
 
     # Enter time in workorder
     start_hours = WebDriverWait(driver, 5).until(EC.presence_of_element_located(

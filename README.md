@@ -7,8 +7,8 @@
 
 ## Requirements
 
-- a server running [Docker](https://www.docker.com/).
-- a Android device to run [Tasker](https://tasker.joaoapps.com/).
+- A server running [Docker](https://www.docker.com/).
+- A Android device to run [Tasker](https://play.google.com/store/apps/details?id=net.dinglisch.android.taskerm).
 
 ## How it works
 
@@ -16,6 +16,8 @@ Tasker is an application for Android which performs tasks (sets of actions) base
 In this project Tasker will monitor if you are on your work location or home location based on near or connected wifi SSID signal.
 
 ## Setup
+
+### Docker host
 
 1. Clone this repository to your docker host.
 
@@ -39,11 +41,21 @@ WEB_URL="https://example.com"
 WEB_USERNAME="username"
 WEB_PASSWORD="password"
 
-# Save a .png image of a workorder with entered time
-# Set to true to save or set false or empty to not save a image
-# path where images will be saved in docker container is '/app/log'
-SAVE_IMAGE=false
+# All workorders have text, to find and fill in the correct workorder, make a comma separated list of words to search for.
+# The words may be part of text for e.g. if the word "dienst" is in the list it will find "Weekenddienst", "Avonddienst" and "Dagdienst"
+# The rule is, if it contains {word} case sensitive
+WORKORDER_WORDS="dienst, Operator, motorkap"
+
+# Save a .png image of the workorder with filled in time
+# Set true to save a image or set false or empty to not save a image
+# The path where images will be saved in the 'worker' docker container is '/app/log'
+SAVE_IMAGE=true
 ```
+
+### Android
+
+1. Install [Tasker](https://play.google.com/store/apps/details?id=net.dinglisch.android.taskerm).
+2. Download or copy the Tasker project XML on your device [Link](https://github.com/theautomation/workorder/blob/338ae2deb2da5e7adcc8147920e9896fe62d7ce7/tasker/workday.prj.xml)
 
 ## To Do
 
