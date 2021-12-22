@@ -7,8 +7,8 @@
 
 ## Requirements
 
-- A server running [Docker](https://www.docker.com/).
-- A Android device to run [Tasker](https://play.google.com/store/apps/details?id=net.dinglisch.android.taskerm).
+- A server, PC, or other device running [Docker](https://www.docker.com/).
+- Android device to run [Tasker](https://play.google.com/store/apps/details?id=net.dinglisch.android.taskerm).
 
 ## How it works
 
