@@ -9,7 +9,7 @@ Table of contents:
 
 - [Requirements](#Requirements)
 
-- [How it works](#Howitworks)
+- [How it works](#How-it-works)
 
 - [Setup](#Setup)
   - [Docker host](#Docker-host)
@@ -24,7 +24,7 @@ Table of contents:
 
 1. Tasker (your phone) monitors whether you arrive at work :office: based on the WiFi signal that your phone receives and stores the date and start time locally in a tasker variable, the same happens when you leave work, an end time will be stored. A notification with the saved time appears after a trigger
 
-<img src="https://github.com/theautomation/workorder/images/starttime.jpg" height="250">
+<img src="https://github.com/theautomation/workorder/blob/951f223d4b21501b629758aaaa5f81fd2cefe7a4/images/starttime.jpg" height="250">
 
 2. If new data is stored in Tasker the saved times will be sent to the API and stored in a database only if the phone is connected to the home WiFi network because the API can only be accessed from the locale network. This will be executed at fixed time 04:00 in the morning, the time can be changed in the Tasker XML or in the Tasker App. (Docker API container)
 
