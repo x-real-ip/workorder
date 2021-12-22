@@ -22,6 +22,8 @@ Table of contents:
 
 ## How it works
 
+<img src="https://github.com/theautomation/workorder/blob/7cffccc10f772a550835528b33a7f7a49c415387/images/import_tasker_project.jpg">
+
 1. Your phone (Tasker) monitors whether you arrive at work :office: based on the WiFi signal that your phone receives and stores the date and start time locally in a tasker variable, the same happens when you leave work, an end time will be stored. A notification with the saved time appears after a trigger <img src="https://github.com/theautomation/workorder/blob/951f223d4b21501b629758aaaa5f81fd2cefe7a4/images/starttime.jpg" height="200">
 
 2. If new data is stored in Tasker the saved times will be sent to the API and stored in a database only if the phone is connected to the home :house: WiFi network because the API can only be accessed from the locale network. This will be executed at fixed time 04:00 in the morning, the time can be changed in the Tasker XML or in the Tasker App.
@@ -50,17 +52,16 @@ mv ./prd-workorder-app.env.example ./prd-workorder-app.env
 # URL to open
 WEB_URL="https://example.com"
 
-# Credentials for WEB_URL login
+# Credentials for login
 WEB_USERNAME="username"
 WEB_PASSWORD="password"
 
-# All workorders have text, to find and fill in the correct workorder, make a comma separated list of words to search for.
+# To find and fill in the correct workorder, make a comma separated list of words to search for.
 # The words may be part of text for e.g. if the word "dienst" is in the list it will find "Weekenddienst", "Avonddienst" and "Dagdienst"
-# The rule is, if it contains {word} case sensitive
 WORKORDER_WORDS="dienst, Operator, motorkap"
 
 # Save a .png image of the workorder with filled in time
-# Set true to save a image or set false or empty to not save a image
+# Set true to save a image otherwise set false or empty
 # The path where images will be saved in the 'worker' docker container is '/app/log'
 SAVE_IMAGE=true
 ```
@@ -72,6 +73,5 @@ SAVE_IMAGE=true
 1. Install [Tasker](https://play.google.com/store/apps/details?id=net.dinglisch.android.taskerm).
 2. Download or copy the Tasker project XML on your device [Link](https://github.com/theautomation/workorder/blob/338ae2deb2da5e7adcc8147920e9896fe62d7ce7/tasker/workday.prj.xml)
 3. Change wifi SSID's in the XML or later in the Tasker app after importing the XML
-4. Import the XML in Tasker. <img src="https://github.com/theautomation/workorder/blob/951f223d4b21501b629758aaaa5f81fd2cefe7a4/images/import_tasker_project.jpg" height="200">
-
+4. Import the XML in Tasker. <img src="https://github.com/theautomation/workorder/blob/7cffccc10f772a550835528b33a7f7a49c415387/images/import_tasker_project.jpg" height="200">
 5. Make sure that Tasker is allowed to run in background. More info at [dontkillmyapp.com](https://dontkillmyapp.com/)
