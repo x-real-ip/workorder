@@ -22,7 +22,7 @@ Table of contents:
 
 ## How it works
 
-<img src="https://github.com/theautomation/workorder/blob/3d5001eb6110121998080f1efbcd3318a56172a1/images/workorder.diagram.png">
+<img src="https://github.com/theautomation/workorder/blob/e01f79fa8e838074eb306dd6df3f3c1ec6860466/images/workorder.diagram.png">
 
 1. Your phone (Tasker) monitors whether you arrive at work :office: based on the WiFi signal that your phone receives and stores the date and start time locally in a tasker variable, the same happens when you leave work, an end time will be stored. A notification with the saved time appears after a trigger <img src="https://github.com/theautomation/workorder/blob/951f223d4b21501b629758aaaa5f81fd2cefe7a4/images/starttime.jpg" height="200">
 
