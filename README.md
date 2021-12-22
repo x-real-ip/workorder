@@ -5,6 +5,16 @@
 ![GitHub commit activity](https://img.shields.io/github/commit-activity/y/theautomation/workorder?logo=github)
 ![GitHub last commit (branch)](https://img.shields.io/github/last-commit/theautomation/workorder/main?logo=github)
 
+Table of contents:
+
+- [Requirements](#Requirements)
+
+- [How it works](#Howitworks)
+
+- [Setup](#Setup)
+  - [Docker host](#Docker-host)
+  - [Android](#Android)
+
 ## Requirements
 
 - A server, PC, or other device running [Docker](https://www.docker.com/).
@@ -12,8 +22,16 @@
 
 ## How it works
 
+1. Tasker (your phone) monitors whether you arrive at work :office: based on the WiFi signal that your phone receives and stores the date and start time locally in a tasker variable, the same happens when you leave work, an end time will be stored. A notification with the saved time appears after a trigger
+
+<img src="https://github.com/theautomation/workorder/images/starttime.jpg" height="250">
+
+2. If new data is stored in Tasker the saved times will be sent to the API and stored in a database only if the phone is connected to the home WiFi network because the API can only be accessed from the locale network. This will be executed at fixed time 04:00 in the morning, the time can be changed in the Tasker XML or in the Tasker App. (Docker API container)
+
+3. At 07:00 data is retrieved from the database, entered into the workorder and sent. A python script take care of this part. (Docker Worker container)
+
 Tasker is an application for Android which performs tasks (sets of actions) based on contexts (application, time, date, location, event, gesture) in user-defined profiles or in clickable or timer home screen widgets.
-In this project Tasker will monitor if you are on your work location or home location based on near or connected wifi SSID signal.
+In this project Tasker will monitor if you are on your work location or home location based on near or connected wifi SSID signal. More info [here](https://tasker.joaoapps.com/)
 
 ## Setup
 
@@ -56,9 +74,3 @@ SAVE_IMAGE=true
 
 1. Install [Tasker](https://play.google.com/store/apps/details?id=net.dinglisch.android.taskerm).
 2. Download or copy the Tasker project XML on your device [Link](https://github.com/theautomation/workorder/blob/338ae2deb2da5e7adcc8147920e9896fe62d7ce7/tasker/workday.prj.xml)
-
-## To Do
-
-- [Take loglevel from env consol and file](https://gist.github.com/juanpabloaj/3e6a41f683c1767c17824811db01165b#file-logging_env-py)
-- Notification when workorder has completed
-- How many days back in time to use (db query and selenium workorder text to find)
