@@ -1,7 +1,7 @@
 *.log
 *.db
 *.env
-*.png
+
 
 pyvenv.cfg
 secrets.*
@@ -10,3 +10,4 @@ secrets.*
 /bin
 /include
 /lib
+app/log/**.png

@@ -73,5 +73,6 @@ SAVE_IMAGE=true
 1. Install [Tasker](https://play.google.com/store/apps/details?id=net.dinglisch.android.taskerm).
 2. Download or copy the Tasker project XML on your device [Link](https://github.com/theautomation/workorder/blob/338ae2deb2da5e7adcc8147920e9896fe62d7ce7/tasker/workday.prj.xml)
 3. Change wifi SSID's in the XML or later in the Tasker app after importing the XML
-4. Import the XML in Tasker. <img src="https://github.com/theautomation/workorder/blob/7cffccc10f772a550835528b33a7f7a49c415387/images/import_tasker_project.jpg" height="200">
+4. Import the XML in Tasker.
+   <img src="https://github.com/theautomation/workorder/blob/7cffccc10f772a550835528b33a7f7a49c415387/images/import_tasker_project.jpg" height="200">
 5. Make sure that Tasker is allowed to run in background. More info at [dontkillmyapp.com](https://dontkillmyapp.com/)
