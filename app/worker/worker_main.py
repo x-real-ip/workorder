@@ -163,7 +163,7 @@ def main():
     converted_date = convert_date(yesterday)
 
     # Get word list from env variable
-    word_list = os.environ.get('WORKORDER_TEXT').split(", ")
+    word_list = os.environ.get('WORKORDER_WORDS').split(", ")
 
     # Search workorder that contains converted date and a word from word list
     found_word = False
