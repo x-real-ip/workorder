@@ -182,6 +182,8 @@ def main():
     # Exit if no workorder is found
     if found_word == False:
         logger.warning("no workorder is found")
+        driver.quit()
+        logger.info("selenium webdrive finished")
         sys.exit()
 
     # Open workorder
@@ -239,6 +241,7 @@ def main():
     # Quit webdriver
     driver.quit()
     logger.info("selenium webdrive finished")
+    sys.exit()
 
 
 if __name__ == '__main__':
