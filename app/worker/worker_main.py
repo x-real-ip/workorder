@@ -13,6 +13,7 @@ import logging
 import logging.config
 
 from selenium import webdriver
+from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.chrome.service import Service
@@ -20,7 +21,7 @@ from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.support import expected_conditions as EC
-from webdriver_manager.chrome import ChromeDriverManager
+
 
 base_path = '/app'
 worker_path = base_path + '/worker'
@@ -126,20 +127,19 @@ def main():
         final_start_time = time_round_down(*split_time(start_time))
         final_end_time = time_round_up(*split_time(end_time))
         logger.info(
-            f"worktime for workorder: {yesterday} is rounded up and down:")
+            f"worktime for workorder: {yesterday} is rounded up and down")
         logger.info(
             f"starttime: {final_start_time[0]}.{final_start_time[1]} endtime: {final_end_time[0]}.{final_end_time[1]}")
     except Exception as msg:
         logger.error(msg)
 
     # Setup webdriver
-    install = Service(ChromeDriverManager().install())
     options = Options()
     options.add_argument("--headless")
     options.add_argument("--no-sandbox")
     options.add_argument("--disable-dev-shm-usage")
     options.add_argument("--window-size=720,930")
-    driver = webdriver.Chrome(service=install, options=options)
+    driver = webdriver.Chrome(ChromeDriverManager().install(), options=options)
 
     # Open webpage
     try:
