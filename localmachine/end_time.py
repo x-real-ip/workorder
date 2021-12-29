@@ -20,6 +20,6 @@ file = open(config.json_file, "w")
 json.dump(json_object, file)
 file.close()
 
-url = 'http://docker-host.lan:8050/workday'
 headers = {'Accept': 'application/json', 'Content-Type': 'application/json'}
-requests.post(url, data=open(config.json_file, 'rb'), headers=headers)
+requests.post(config.api_url, data=open(
+    config.json_file, 'rb'), headers=headers)
