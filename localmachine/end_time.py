@@ -22,6 +22,4 @@ file.close()
 
 url = 'http://docker-host.lan:8050/workday'
 headers = {'Accept': 'application/json', 'Content-Type': 'application/json'}
-r = requests.post(url, data=open(config.json_file, 'rb'), headers=headers)
-
-print(f"Status Code: {r.status_code}, Response: {r.json()}")
+requests.post(url, data=open(config.json_file, 'rb'), headers=headers)
