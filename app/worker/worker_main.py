@@ -134,13 +134,12 @@ def main():
         logger.error(msg)
 
     # Setup webdriver
-    options = Options()
-    options.add_argument("--headless")
-    options.add_argument("--no-sandbox")
-    options.add_argument("--disable-dev-shm-usage")
-    options.add_argument("--window-size=720,930")
-    driver = webdriver.Chrome(ChromeDriverManager().install(), options=options)
-
+    chrome_options = Options()
+    chrome_options.add_argument("--headless")
+    chrome_options.add_argument("--no-sandbox")
+    chrome_options.add_argument("--disable-dev-shm-usage")
+    chrome_options.add_argument("--window-size=720,930")
+    driver = webdriver.Chrome(executable_path="/app/worker/chromedriver", chrome_options=chrome_options)
     # Open webpage
     try:
         web_url = os.environ.get('WEB_URL')
