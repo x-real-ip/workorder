@@ -27,8 +27,11 @@ worker_path = base_path + '/worker'
 log_path = base_path + '/log'
 db_path = base_path + '/db'
 
-env_variables = ('WEB_URL', 'WEB_USERNAME', 'WEB_PASSWORD', 'WORKORDER_WORDS')
-
+env_variables = ('WEB_URL',
+                 'WEB_USERNAME',
+                 'WEB_PASSWORD',
+                 'WORKORDER_WORDS'
+                 )
 
 logging.config.fileConfig(worker_path + '/logging.ini',
                           disable_existing_loggers=False)
