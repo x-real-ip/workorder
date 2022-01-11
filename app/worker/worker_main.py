@@ -13,7 +13,6 @@ import logging
 import logging.config
 
 from selenium import webdriver
-from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.chrome.service import Service
@@ -139,7 +138,8 @@ def main():
     chrome_options.add_argument("--no-sandbox")
     chrome_options.add_argument("--disable-dev-shm-usage")
     chrome_options.add_argument("--window-size=720,930")
-    driver = webdriver.Chrome(executable_path="/app/worker/chromedriver", chrome_options=chrome_options)
+    driver = webdriver.Chrome(
+        executable_path="/app/worker/chromedriver", chrome_options=chrome_options)
     # Open webpage
     try:
         web_url = os.environ.get('WEB_URL')
