@@ -20,7 +20,7 @@ from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.support import expected_conditions as EC
-
+from webdriver_manager.chrome import ChromeDriverManager
 
 base_path = '/app'
 worker_path = base_path + '/worker'
@@ -136,13 +136,13 @@ def main():
         logger.error(msg)
 
     # Setup webdriver
-    chrome_options = Options()
-    chrome_options.add_argument("--headless")
-    chrome_options.add_argument("--no-sandbox")
-    chrome_options.add_argument("--disable-dev-shm-usage")
-    chrome_options.add_argument("--window-size=720,930")
-    driver = webdriver.Chrome(
-        executable_path="/app/worker/chromedriver", chrome_options=chrome_options)
+    options = Options()
+    options.add_argument("--headless")
+    options.add_argument("--no-sandbox")
+    options.add_argument("--disable-dev-shm-usage")
+    options.add_argument("--window-size=720,930")
+    driver = webdriver.Chrome(ChromeDriverManager().install(), options=options)
+
     # Open webpage
     try:
         web_url = os.environ.get('WEB_URL')
@@ -153,13 +153,23 @@ def main():
 
     # Login
     web_username = os.environ.get('WEB_USERNAME')
-    driver.find_element(By.TAG_NAME, 'input').send_keys(web_username)
-    driver.find_element(By.TAG_NAME, 'button').click()
+
+    username = WebDriverWait(driver, 5).until(EC.presence_of_element_located(
+        (By.TAG_NAME, 'input')))
+    username.send_keys(web_username)
+
+    first_button = WebDriverWait(driver, 5).until(EC.presence_of_element_located(
+        (By.TAG_NAME, 'button')))
+    first_button.click()
 
     web_password = os.environ.get('WEB_PASSWORD')
-    driver.find_element(By.TAG_NAME, 'input').send_keys(web_password)
-    driver.find_element(
-        By.XPATH, '//*[@id="app"]/div/div[2]/div[1]/div[2]/button[2]').click()
+
+    password = WebDriverWait(driver, 5).until(EC.presence_of_element_located(
+        (By.TAG_NAME, 'input')))
+    password.send_keys(web_password)
+    second_button = WebDriverWait(driver, 5).until(EC.presence_of_element_located(
+        (By.XPATH, '//*[@id="app"]/div/div[2]/div[1]/div[2]/button[2]')))
+    second_button.click()
 
     # Convert date e.g. "2021-01-01 -> "Jan 1"
     converted_date = convert_date(yesterday)
