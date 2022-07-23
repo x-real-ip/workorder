@@ -6,9 +6,9 @@ RUN mkdir -p /app/db /app/log
 
 WORKDIR /app/api
 
-COPY ./app/api .
+COPY /src/app/api .
 
-COPY /app/logging.ini .
+COPY /src/app/logging.ini .
 
 RUN pip install --no-cache-dir --upgrade -r requirements.txt
 
