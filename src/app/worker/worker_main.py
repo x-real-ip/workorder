@@ -123,6 +123,9 @@ def main():
         logger.info("exit worker")
         sys.exit()
 
+    # Convert date e.g. "2021-01-01 -> "Jan 1"
+    converted_date = convert_date(yesterday)
+
     try:
         # Round down and round up time
         final_start_time = time_round_down(*split_time(start_time))
@@ -174,8 +177,11 @@ def main():
         (By.XPATH, '//*[@id="app"]/div/div[2]/div[1]/div[2]/button[2]')))
     second_button.click()
 
-    # Convert date e.g. "2021-01-01 -> "Jan 1"
-    converted_date = convert_date(yesterday)
+    # Wait for page load
+    time.sleep(5)
+
+    # Go to emplyee page
+    driver.get(web_url + '/#/employee')
 
     # Get word list from env variable
     word_list = os.environ.get('WORKORDER_WORDS').split(", ")
@@ -185,7 +191,7 @@ def main():
     for word in word_list:
         try:
             order = WebDriverWait(driver, 5).until(EC.presence_of_element_located(
-                (By.XPATH, "//div/p[contains(text(),'{}') and preceding-sibling::h6[contains(text(),'{}')]]".format(converted_date, word))))
+                (By.XPATH, "//div/p[contains(text(),'{}') and ../../div/p[contains(text(),'{}')]]".format(converted_date, word))))
             if order != None:
                 logger.info(f"found workorder with word: {word}")
                 found_word = True

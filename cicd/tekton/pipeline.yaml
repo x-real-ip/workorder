@@ -34,7 +34,7 @@ spec:
           workspace: shared-data
       params:
         - name: IMAGE
-          value: container-image-registry.devops.svc:5000/tools/$(context.pipelineRun.name):latest
+          value: container-image-registry.devops.svc:5000/tools/$(context.pipelineRun.name)-api:latest
         - name: DOCKERFILE
           value: ./deploy/container/Containerfile.api
         - name: PUSH_EXTRA_ARGS
@@ -54,7 +54,7 @@ spec:
           workspace: shared-data
       params:
         - name: IMAGE
-          value: container-image-registry.devops.svc:5000/tools/$(context.pipelineRun.name):latest
+          value: container-image-registry.devops.svc:5000/tools/$(context.pipelineRun.name)-worker:latest
         - name: DOCKERFILE
           value: ./deploy/container/Containerfile.worker
         - name: PUSH_EXTRA_ARGS
