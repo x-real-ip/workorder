@@ -1,5 +1,4 @@
 from datetime import date
-import logging
 from fastapi import FastAPI, Depends
 from pydantic import BaseModel
 from typing import Optional, List
@@ -7,9 +6,6 @@ from sqlalchemy import Date, create_engine
 from sqlalchemy.orm import declarative_base, sessionmaker, Session
 from sqlalchemy import Column, String, Integer
 import uvicorn
-
-
-logging.config.fileConfig("logging.ini")
 
 app = FastAPI()
 
@@ -28,9 +24,8 @@ def get_db():
     finally:
         db.close()
 
+
 # A SQLAlchemy ORM
-
-
 class DBWorkday(Base):
     __tablename__ = 'workdays'
 
@@ -44,9 +39,8 @@ class DBWorkday(Base):
 
 Base.metadata.create_all(bind=engine)
 
+
 # Workday Pydantic model
-
-
 class Workday(BaseModel):
     date: date
     start_time: str
@@ -57,9 +51,8 @@ class Workday(BaseModel):
     class Config:
         orm_mode = True
 
+
 # Methods for interacting with the database
-
-
 def get_workday(db: Session, workday_date: date):
     return db.query(DBWorkday).where(DBWorkday.date == workday_date).order_by(DBWorkday.id.desc()).all()
 
