@@ -42,30 +42,24 @@ spec:
           ports:
             - containerPort: 8000
               protocol: TCP
-          env:
-            - name: "WEB_URL"
-              value: "https://anywhere.united4all.nl"
-            - name: "WORKORDER_WORDS"
-              value: "dienst, DEVELOPMENT, Operator, motorkap"
-            - name: SAVE_IMAGE
-              value: "true"
-            - name: "WEB_USERNAME"
-              valueFrom:
-                secretKeyRef:
-                  name: workorder-login
-                  key: username
-            - name: "WEB_PASSWORD"
-              valueFrom:
-                secretKeyRef:
-                  name: workorder-login
-                  key: password
-          volumeMounts:
-            - name: workorder-api-data
-              mountPath: /app
-      volumes:
-        - name: workorder-api-data
-          persistentVolumeClaim:
-            claimName: pvc-nfs-workorder-api-data
+      #     env:
+      #       - name: "WEB_USERNAME"
+      #         valueFrom:
+      #           secretKeyRef:
+      #             name: workorder-login
+      #             key: username
+      #       - name: "WEB_PASSWORD"
+      #         valueFrom:
+      #           secretKeyRef:
+      #             name: workorder-login
+      #             key: password
+      #     volumeMounts:
+      #       - name: workorder-api-data
+      #         mountPath: /app
+      # volumes:
+      #   - name: workorder-api-data
+      #     persistentVolumeClaim:
+      #       claimName: pvc-nfs-workorder-api-data
       imagePullSecrets:
         - name: container-image-registry-credentials
 
