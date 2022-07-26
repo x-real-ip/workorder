@@ -42,6 +42,24 @@ spec:
           ports:
             - containerPort: 8000
               protocol: TCP
+          readinessProbe:
+            httpGet:
+              path: /docs
+              port: 8000
+              httpHeaders:
+                - name: Accept
+                  value: application/json
+            initialDelaySeconds: 10
+            periodSeconds: 3
+          livenessProbe:
+            httpGet:
+              path: /docs
+              port: 8000
+              httpHeaders:
+                - name: Accept
+                  value: application/json
+            initialDelaySeconds: 10
+            periodSeconds: 3
       #     env:
       #       - name: "WEB_USERNAME"
       #         valueFrom:
