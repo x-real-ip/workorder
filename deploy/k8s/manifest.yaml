@@ -1,18 +1,126 @@
-# ---
-# kind: SealedSecret
-# apiVersion: bitnami.com/v1alpha1
-# metadata:
-#   name: workorder-login
-#   namespace: tools
-# spec:
-#   encryptedData:
-#     password: AgDHZOOGRPctea2uVhwBK3De6jjfmcbiCUee6W87mh+BJ2/Zm+SFMnDRad1fGxWnjEXvMgZzwNCoxIHKS0ZEXo9fn/bQ0NrNotuOAs/KwiljZ89T1SeJoFe0wxrsZDehHbQ1OYq0K9yXK5IjOtyGseIorFZN0/cOlrQKVL+BKRNxTVRyKPkTEbc8SxSpjD9ZL57RET2QSLl9pxg6BF8kdxjsxnqOvdG1KqZXhiMlJlW9/c6LP+J80tIvT2KtCeIcnhKNiI0Za4GeL1uG3t9jaA2bSSgC3+h9tW9jHivKg7C9BpsZNmlegXR0ojQmemLZ2IBydltx4tWkQ9YnGmvhvkQs08kbQUQzsu/mM15YZHXq9aCDRVzcVBCMpmtv90woTASQya9jsPA9gCHcPElliZL2KNO+cmJ/axiPJPRPZkqflyfxAWeKadAWclNWGPkebVGvFcYq62LFk6xFpc/u4GG6x97fcOZNmQBNlrfIf9FNjN1irCifpb6T1zXU7wYoFOJSLUlhxZiILRauS4RSQ6qUDri+X28o/Np0cVq0NdowIhlYkAd5avh4rInoBao8Tqq+aHDAV7ul01J3MtyLM5vhBs1SPGTEci11H7c+dVuSyoVDX7tfdJ5KNAMETyzwHj7I9IFE1jaQRKB8+i4wNPl6+7dJbsK2HLLoooMzzTyEVoqS7svdeQijc3orA3GPHL/UycBR6NFeVQ==
-#     username: AgB4WSSRfnmvelnShV19jsd0rHr278TFeKFJOIfwJhiMS+pcWgFLYQcFAjeyv70xVFE07SLxuwlGhf4gRxPsZ+ZPnn8pSoxzJ8lEZbfyZYDqiMvYXulZbRIWrkguaTugNzcpXzoH2j1P42wYUW1NjfalhlWFYJIgxcBGYpihQhyPDv1Lr14NZcBuQdWMo2w4sjjCm7Z68gtsBusjF11vC8ym5ooebt9uzmCTDB/ZykVeR4NBEr9dKMojQSpTsQ3sgezXMrI7MJ3M1E2Ahck/ai/nQ61E+adBnynTIwQwo68vlLZ0wxyhuH/QGWjVDwJ9cMrgTnSDH3mnPOH5g6AJrXfJRCy9HDI88YFOV4z0Cl+j1+syREe/sy6sJ4qBBFOgAEVE5iIB6x5KKEiDjxXrETLlba+QajIplfksiRSnPpfRS1tAmhTseIf1k3wCyBr/UF5W9JOF7fMsl4RiIDSiy4ivFi4GJsSJfMYaldshzSES7W79PD2pF0cGrqTPEcIg3ACBCMA4TPhXZVYxF9tV2C70JaNC0axSsiZxgVRQ1Zwa+9d08WqnGMjd8HykXUo2UUvOUwF1WpfceC81sHjwr5J2YRRe/pZf8d+h6jW6B8gPi/RDogmfewjnE3uweLK7zELnpOzfLjLVnkdI9i037V7THQqOJVQo/h8xzQCCwI7Tn8R5jXX9J3qzIz7AM34jMombunKzxzY7b/A=
-#   template:
-#     type: Opaque
-#     metadata:
-#       name: workorder-login
-#       namespace: tools
+---
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  name: pv-iscsi-workorder-db
+spec:
+  storageClassName: "freenas-iscsi-manual-csi"
+  capacity:
+    storage: 5Gi
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  csi:
+    driver: org.democratic-csi.node-manual
+    readOnly: false
+    fsType: xfs
+    volumeHandle: pv-iscsi-workorder-db
+    volumeAttributes:
+      portal: storage-server.lan:3260
+      iqn: iqn.2005-10.org.freenas.ctl:workorder-db
+      lun: "0"
+      node_attach_driver: iscsi
+      provisioner_driver: node-manual
+
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: pvc-iscsi-workorder-db
+  namespace: tools
+  annotations:
+    volume.beta.kubernetes.io/storage-class: "freenas-iscsi-manual-csi"
+spec:
+  storageClassName: freenas-iscsi-manual-csi
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 5Gi
+  volumeName: pv-iscsi-workorder-db
+
+---
+apiVersion: bitnami.com/v1alpha1
+kind: SealedSecret
+metadata:
+  name: workorder-mysql-secrets
+  namespace: tools
+spec:
+  encryptedData:
+    password: AgC96i57QS7c90xd1m8zmPufjafzn1qP4A/6VQU7NJWR7dG2tzxifVbXvRpe39Bf0VxM1IwI1bKoj95sVVgyP3ode1uIqK0nK8by/3fLBWKvoEKEOzGbfIU+tqLqkNQgybe6DvbARnXMdwp4P3WbdcF+bSLUAtemgNrR7L9JEohkmpSG+sNHluwJ5fiNfqku5P9c9jM+mCyiw3zisVoX0t61jJlPCWCYyGsZCLTRYKAJ1biFzrSjdOAgR1/sQj/RS30tHt0nVDV8UEfgcXgBFEXJOMZ/3aDOHk69SZ6XnlCJGrERI/DRjIOam/1nwwKllUaQ8IDb4mVD5tqmKhVHVDI2rscXvzCWGfAP7yQWnfJlpjPQa8gWrq46C0+zYM6SgxcacEmK7OA3kUjfaH9Beaz+w70njW5rU4CxfXkDfCubQhW2LhdyUlVt54Bv11iPlYty3vcn+0p0wG+3WU2S4mMaFjKAhowVLDchxFHE+gKxZrH90L71Da6SYKzqVOhCHaizYCnKeaURF2Di4b2Ih4OtIqBwvKIMqpfEh/N3htJAOPScW9CJK27DyE5dkVAw84IlzZRSavnCjv+yUOsInM/Dri/IVPjgwLJydKrMePg0NBd5wg9FHCNPKzMB9YSJDW++GApqbfc5AaY2UISVVZTNQ91qkXkfGeKJNztqQ+ETKlFrExg1/9WIBDdsZCustNVnGzt/f+0GrnfPNNTnRS4=
+    username: AgAP8a20YjSu37CTq1WRq0psnlRFC9pDfv4zGfPY1p3fPiHJ/ft4QKaAkdrU2ENun+XsJEdvGS4NrweEMt3qVAz+5r+NhIgrEiiDR4/2rzTRzL0bdNXTwxjHTevGW0Tvp0/01NQzNdsrgDvosYiyg8ycepTbP3dp7T9fRzi5GDtpPuwoxVBxX+yzx01mEg8D6aCNABKvIr53vrkSuxL+gbisF53ZLkmGPWiP5QYeG7jqeylDJTJ5GFjuVyYZJyACWy0LdozokClA94tNKstBWWGiew6Q/gln2Q4BgR3ZDs7CwKd051BA2uIweMhrQELnaIIwUlzDKumfqxjdtV78gZUcCMfbwXi7LWX+R+nDuPy0k8Pm/j4Rlukb4qByM2LWb6c4im9zYbvp/NYt0w+/YgUBaT00KvL0gX1TQjVDDl5WP4B4NYKh24wd75iV97Pjnapreph+W6htyKT4ius6P7CMc3BUIEhuLY7vsMwWQCosme+ZD+zd5fRjvbbbvViNTPvyAqUcHo48jkqD0vglBriM7uqoR1OJrWWlaNgylKvgElzTegbPp45bqko2dEJ2TruPKA6rNN3Q4SnoUnEmQFcBSyhbgjKlHnD3wAhDKuKfZHnoGuS/i0uVojcnKTPoiNjIA20vyo0J4mO0hcvKZji/1WRNQ4KMoV/yqetgwIfVMn94Q51aE1ijhRj1TrZkMg1TT2d2s4l8ns1rC97HJsnC
+  template:
+    metadata:
+      name: workorder-mysql-secrets
+      namespace: tools
+
+---
+kind: SealedSecret
+apiVersion: bitnami.com/v1alpha1
+metadata:
+  name: workorder-login
+  namespace: tools
+spec:
+  encryptedData:
+    password: AgDHZOOGRPctea2uVhwBK3De6jjfmcbiCUee6W87mh+BJ2/Zm+SFMnDRad1fGxWnjEXvMgZzwNCoxIHKS0ZEXo9fn/bQ0NrNotuOAs/KwiljZ89T1SeJoFe0wxrsZDehHbQ1OYq0K9yXK5IjOtyGseIorFZN0/cOlrQKVL+BKRNxTVRyKPkTEbc8SxSpjD9ZL57RET2QSLl9pxg6BF8kdxjsxnqOvdG1KqZXhiMlJlW9/c6LP+J80tIvT2KtCeIcnhKNiI0Za4GeL1uG3t9jaA2bSSgC3+h9tW9jHivKg7C9BpsZNmlegXR0ojQmemLZ2IBydltx4tWkQ9YnGmvhvkQs08kbQUQzsu/mM15YZHXq9aCDRVzcVBCMpmtv90woTASQya9jsPA9gCHcPElliZL2KNO+cmJ/axiPJPRPZkqflyfxAWeKadAWclNWGPkebVGvFcYq62LFk6xFpc/u4GG6x97fcOZNmQBNlrfIf9FNjN1irCifpb6T1zXU7wYoFOJSLUlhxZiILRauS4RSQ6qUDri+X28o/Np0cVq0NdowIhlYkAd5avh4rInoBao8Tqq+aHDAV7ul01J3MtyLM5vhBs1SPGTEci11H7c+dVuSyoVDX7tfdJ5KNAMETyzwHj7I9IFE1jaQRKB8+i4wNPl6+7dJbsK2HLLoooMzzTyEVoqS7svdeQijc3orA3GPHL/UycBR6NFeVQ==
+    username: AgB4WSSRfnmvelnShV19jsd0rHr278TFeKFJOIfwJhiMS+pcWgFLYQcFAjeyv70xVFE07SLxuwlGhf4gRxPsZ+ZPnn8pSoxzJ8lEZbfyZYDqiMvYXulZbRIWrkguaTugNzcpXzoH2j1P42wYUW1NjfalhlWFYJIgxcBGYpihQhyPDv1Lr14NZcBuQdWMo2w4sjjCm7Z68gtsBusjF11vC8ym5ooebt9uzmCTDB/ZykVeR4NBEr9dKMojQSpTsQ3sgezXMrI7MJ3M1E2Ahck/ai/nQ61E+adBnynTIwQwo68vlLZ0wxyhuH/QGWjVDwJ9cMrgTnSDH3mnPOH5g6AJrXfJRCy9HDI88YFOV4z0Cl+j1+syREe/sy6sJ4qBBFOgAEVE5iIB6x5KKEiDjxXrETLlba+QajIplfksiRSnPpfRS1tAmhTseIf1k3wCyBr/UF5W9JOF7fMsl4RiIDSiy4ivFi4GJsSJfMYaldshzSES7W79PD2pF0cGrqTPEcIg3ACBCMA4TPhXZVYxF9tV2C70JaNC0axSsiZxgVRQ1Zwa+9d08WqnGMjd8HykXUo2UUvOUwF1WpfceC81sHjwr5J2YRRe/pZf8d+h6jW6B8gPi/RDogmfewjnE3uweLK7zELnpOzfLjLVnkdI9i037V7THQqOJVQo/h8xzQCCwI7Tn8R5jXX9J3qzIz7AM34jMombunKzxzY7b/A=
+  template:
+    type: Opaque
+    metadata:
+      name: workorder-login
+      namespace: tools
+
+---
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: workorder-mysql
+  namespace: tools
+  labels:
+    app: workorder-mysql
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: workorder-mysql
+  template:
+    metadata:
+      labels:
+        app: workorder-mysql
+    spec:
+      containers:
+        - name: workorder-mysql
+          image: mysql:8.0
+          resources: {}
+          ports:
+            - containerPort: 3306
+          env:
+            - name: MYSQL_DATABASE
+              value: workdays
+            - name: MYSQL_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: workorder-mysql-secrets
+                  key: password
+            - name: MYSQL_USER
+              valueFrom:
+                secretKeyRef:
+                  name: workorder-mysql-secrets
+                  key: username
+            - name: MYSQL_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: workorder-mysql-secrets
+                  key: password
+          volumeMounts:
+            - name: workorder-db
+              mountPath: /var/lib/mysql
+      volumes:
+        - name: workorder-db
+          persistentVolumeClaim:
+            claimName: pvc-iscsi-workorder-db
 
 ---
 kind: Deployment
@@ -60,78 +168,66 @@ spec:
                   value: application/json
             initialDelaySeconds: 10
             periodSeconds: 3
-      #     env:
-      #       - name: "WEB_USERNAME"
-      #         valueFrom:
-      #           secretKeyRef:
-      #             name: workorder-login
-      #             key: username
-      #       - name: "WEB_PASSWORD"
-      #         valueFrom:
-      #           secretKeyRef:
-      #             name: workorder-login
-      #             key: password
-      #     volumeMounts:
-      #       - name: workorder-api-data
-      #         mountPath: /app
-      # volumes:
-      #   - name: workorder-api-data
-      #     persistentVolumeClaim:
-      #       claimName: pvc-nfs-workorder-api-data
+          env:
+            - name: DATABASE_NAME
+              value: workdays
+            - name: DATABASE_USER
+              valueFrom:
+                secretKeyRef:
+                  name: workorder-mysql-secrets
+                  key: username
+            - name: DATABASE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: workorder-mysql-secrets
+                  key: password
       imagePullSecrets:
         - name: container-image-registry-credentials
 
-# ---
-# kind: Deployment
-# apiVersion: apps/v1
-# metadata:
-#   name: workorder-worker
-#   namespace: tools
-#   labels:
-#     app: workorder-worker
-# spec:
-#   replicas: 1
-#   selector:
-#     matchLabels:
-#       app: workorder-worker
-#   strategy:
-#     type: Recreate
-#   template:
-#     metadata:
-#       labels:
-#         app: workorder-worker
-#     spec:
-#       containers:
-#         - name: workorder-worker
-#           image: "container-image-registry.theautomation.nl/tools/workorder-worker:latest@sha256:a6bc6281ac3857f4b4d509d640d8814d5bb635fb4dc0d00ac37ee3b6a7b91399"
-#           imagePullPolicy: Always
-#           resources: {}
-#           env:
-#             - name: "WEB_URL"
-#               value: "https://anywhere.united4all.nl"
-#             - name: "WORKORDER_WORDS"
-#               value: "dienst, DEVELOPMENT, Operator, motorkap"
-#             - name: SAVE_IMAGE
-#               value: "false"
-#             - name: "WEB_USERNAME"
-#               valueFrom:
-#                 secretKeyRef:
-#                   name: workorder-login
-#                   key: username
-#             - name: "WEB_PASSWORD"
-#               valueFrom:
-#                 secretKeyRef:
-#                   name: workorder-login
-#                   key: password
-#           volumeMounts:
-#             - name: workorder-worker-data
-#               mountPath: /app
-#       volumes:
-#         - name: workorder-worker-data
-#           persistentVolumeClaim:
-#             claimName: pvc-nfs-workorder-worker-data
-#       imagePullSecrets:
-#         - name: container-image-registry-credentials
+---
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: workorder-worker
+  namespace: tools
+  labels:
+    app: workorder-worker
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: workorder-worker
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: workorder-worker
+    spec:
+      containers:
+        - name: workorder-worker
+          image: "container-image-registry.theautomation.nl/tools/workorder-worker:latest@sha256:a6bc6281ac3857f4b4d509d640d8814d5bb635fb4dc0d00ac37ee3b6a7b91399"
+          imagePullPolicy: Always
+          resources: {}
+          env:
+            - name: "WEB_URL"
+              value: "https://anywhere.united4all.nl"
+            - name: "WORKORDER_WORDS"
+              value: "dienst, DEVELOPMENT, Operator, motorkap"
+            - name: SAVE_IMAGE
+              value: "false"
+            - name: "WEB_USERNAME"
+              valueFrom:
+                secretKeyRef:
+                  name: workorder-login
+                  key: username
+            - name: "WEB_PASSWORD"
+              valueFrom:
+                secretKeyRef:
+                  name: workorder-login
+                  key: password
+      imagePullSecrets:
+        - name: container-image-registry-credentials
 
 ---
 kind: Service
