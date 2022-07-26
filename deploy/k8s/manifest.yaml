@@ -96,6 +96,7 @@ spec:
           resources: {}
           ports:
             - containerPort: 3306
+              protocol: TCP
           env:
             - name: MYSQL_DATABASE
               value: workdays
@@ -169,10 +170,10 @@ spec:
             initialDelaySeconds: 10
             periodSeconds: 3
           env:
+            - name: "DATABASE_HOSTNAME"
+              value: "workorder-api.tools.svc.cluster.local"
             - name: "DATABASE_NAME"
               value: "workdays"
-            - name: "DATABASE_HOSTNAME"
-              value: "workda"
             - name: "DATABASE_USER"
               valueFrom:
                 secretKeyRef:
@@ -247,7 +248,7 @@ spec:
     - name: http
       protocol: TCP
       port: 3306
-      containerPort: 3306
+      targetPort: 3306
 
 ---
 kind: Service
