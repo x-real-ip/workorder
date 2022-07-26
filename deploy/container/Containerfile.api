@@ -12,4 +12,4 @@ COPY /src/app/logging.ini .
 
 RUN pip install --no-cache-dir --upgrade -r requirements.txt
 
-CMD ["python", "api_main.py"]
+CMD ["python", "main.py"]

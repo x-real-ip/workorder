@@ -1,106 +1,18 @@
----
-kind: PersistentVolume
-apiVersion: v1
-metadata:
-  name: pv-nfs-workorder-api-data
-spec:
-  storageClassName: "freenas-nfs-manual-csi"
-  capacity:
-    storage: 5Gi
-  accessModes:
-    - ReadWriteMany
-  persistentVolumeReclaimPolicy: Retain
-  mountOptions:
-    - nfsvers=4
-    - nolock
-    - noatime
-  csi:
-    driver: org.democratic-csi.node-manual
-    readOnly: false
-    fsType: nfs
-    volumeHandle: pv-nfs-workorder-api-data
-    volumeAttributes:
-      server: storage-server.lan
-      share: /mnt/r10_8tb/k8s/workorder-data
-      node_attach_driver: nfs
-      provisioner_driver: node-manual
-
----
-kind: PersistentVolume
-apiVersion: v1
-metadata:
-  name: pv-nfs-workorder-worker-data
-spec:
-  storageClassName: "freenas-nfs-manual-csi"
-  capacity:
-    storage: 5Gi
-  accessModes:
-    - ReadWriteMany
-  persistentVolumeReclaimPolicy: Retain
-  mountOptions:
-    - nfsvers=4
-    - nolock
-    - noatime
-  csi:
-    driver: org.democratic-csi.node-manual
-    readOnly: false
-    fsType: nfs
-    volumeHandle: pv-nfs-workorder-worker-data
-    volumeAttributes:
-      server: storage-server.lan
-      share: /mnt/r10_8tb/k8s/workorder-data
-      node_attach_driver: nfs
-      provisioner_driver: node-manual
-
----
-kind: PersistentVolumeClaim
-apiVersion: v1
-metadata:
-  name: pvc-nfs-workorder-api-data
-  namespace: tools
-  annotations:
-    volume.beta.kubernetes.io/storage-class: "freenas-nfs-manual-csi"
-spec:
-  storageClassName: freenas-nfs-manual-csi
-  accessModes:
-    - ReadWriteMany
-  resources:
-    requests:
-      storage: 5Gi
-  volumeName: pv-nfs-workorder-api-data
-
----
-kind: PersistentVolumeClaim
-apiVersion: v1
-metadata:
-  name: pvc-nfs-workorder-worker-data
-  namespace: tools
-  annotations:
-    volume.beta.kubernetes.io/storage-class: "freenas-nfs-manual-csi"
-spec:
-  storageClassName: freenas-nfs-manual-csi
-  accessModes:
-    - ReadWriteMany
-  resources:
-    requests:
-      storage: 5Gi
-  volumeName: pv-nfs-workorder-worker-data
-
----
-kind: SealedSecret
-apiVersion: bitnami.com/v1alpha1
-metadata:
-  name: workorder-login
-  namespace: tools
-spec:
-  encryptedData:
-    password: AgDHZOOGRPctea2uVhwBK3De6jjfmcbiCUee6W87mh+BJ2/Zm+SFMnDRad1fGxWnjEXvMgZzwNCoxIHKS0ZEXo9fn/bQ0NrNotuOAs/KwiljZ89T1SeJoFe0wxrsZDehHbQ1OYq0K9yXK5IjOtyGseIorFZN0/cOlrQKVL+BKRNxTVRyKPkTEbc8SxSpjD9ZL57RET2QSLl9pxg6BF8kdxjsxnqOvdG1KqZXhiMlJlW9/c6LP+J80tIvT2KtCeIcnhKNiI0Za4GeL1uG3t9jaA2bSSgC3+h9tW9jHivKg7C9BpsZNmlegXR0ojQmemLZ2IBydltx4tWkQ9YnGmvhvkQs08kbQUQzsu/mM15YZHXq9aCDRVzcVBCMpmtv90woTASQya9jsPA9gCHcPElliZL2KNO+cmJ/axiPJPRPZkqflyfxAWeKadAWclNWGPkebVGvFcYq62LFk6xFpc/u4GG6x97fcOZNmQBNlrfIf9FNjN1irCifpb6T1zXU7wYoFOJSLUlhxZiILRauS4RSQ6qUDri+X28o/Np0cVq0NdowIhlYkAd5avh4rInoBao8Tqq+aHDAV7ul01J3MtyLM5vhBs1SPGTEci11H7c+dVuSyoVDX7tfdJ5KNAMETyzwHj7I9IFE1jaQRKB8+i4wNPl6+7dJbsK2HLLoooMzzTyEVoqS7svdeQijc3orA3GPHL/UycBR6NFeVQ==
-    username: AgB4WSSRfnmvelnShV19jsd0rHr278TFeKFJOIfwJhiMS+pcWgFLYQcFAjeyv70xVFE07SLxuwlGhf4gRxPsZ+ZPnn8pSoxzJ8lEZbfyZYDqiMvYXulZbRIWrkguaTugNzcpXzoH2j1P42wYUW1NjfalhlWFYJIgxcBGYpihQhyPDv1Lr14NZcBuQdWMo2w4sjjCm7Z68gtsBusjF11vC8ym5ooebt9uzmCTDB/ZykVeR4NBEr9dKMojQSpTsQ3sgezXMrI7MJ3M1E2Ahck/ai/nQ61E+adBnynTIwQwo68vlLZ0wxyhuH/QGWjVDwJ9cMrgTnSDH3mnPOH5g6AJrXfJRCy9HDI88YFOV4z0Cl+j1+syREe/sy6sJ4qBBFOgAEVE5iIB6x5KKEiDjxXrETLlba+QajIplfksiRSnPpfRS1tAmhTseIf1k3wCyBr/UF5W9JOF7fMsl4RiIDSiy4ivFi4GJsSJfMYaldshzSES7W79PD2pF0cGrqTPEcIg3ACBCMA4TPhXZVYxF9tV2C70JaNC0axSsiZxgVRQ1Zwa+9d08WqnGMjd8HykXUo2UUvOUwF1WpfceC81sHjwr5J2YRRe/pZf8d+h6jW6B8gPi/RDogmfewjnE3uweLK7zELnpOzfLjLVnkdI9i037V7THQqOJVQo/h8xzQCCwI7Tn8R5jXX9J3qzIz7AM34jMombunKzxzY7b/A=
-  template:
-    type: Opaque
-    metadata:
-      name: workorder-login
-      namespace: tools
+# ---
+# kind: SealedSecret
+# apiVersion: bitnami.com/v1alpha1
+# metadata:
+#   name: workorder-login
+#   namespace: tools
+# spec:
+#   encryptedData:
+#     password: AgDHZOOGRPctea2uVhwBK3De6jjfmcbiCUee6W87mh+BJ2/Zm+SFMnDRad1fGxWnjEXvMgZzwNCoxIHKS0ZEXo9fn/bQ0NrNotuOAs/KwiljZ89T1SeJoFe0wxrsZDehHbQ1OYq0K9yXK5IjOtyGseIorFZN0/cOlrQKVL+BKRNxTVRyKPkTEbc8SxSpjD9ZL57RET2QSLl9pxg6BF8kdxjsxnqOvdG1KqZXhiMlJlW9/c6LP+J80tIvT2KtCeIcnhKNiI0Za4GeL1uG3t9jaA2bSSgC3+h9tW9jHivKg7C9BpsZNmlegXR0ojQmemLZ2IBydltx4tWkQ9YnGmvhvkQs08kbQUQzsu/mM15YZHXq9aCDRVzcVBCMpmtv90woTASQya9jsPA9gCHcPElliZL2KNO+cmJ/axiPJPRPZkqflyfxAWeKadAWclNWGPkebVGvFcYq62LFk6xFpc/u4GG6x97fcOZNmQBNlrfIf9FNjN1irCifpb6T1zXU7wYoFOJSLUlhxZiILRauS4RSQ6qUDri+X28o/Np0cVq0NdowIhlYkAd5avh4rInoBao8Tqq+aHDAV7ul01J3MtyLM5vhBs1SPGTEci11H7c+dVuSyoVDX7tfdJ5KNAMETyzwHj7I9IFE1jaQRKB8+i4wNPl6+7dJbsK2HLLoooMzzTyEVoqS7svdeQijc3orA3GPHL/UycBR6NFeVQ==
+#     username: AgB4WSSRfnmvelnShV19jsd0rHr278TFeKFJOIfwJhiMS+pcWgFLYQcFAjeyv70xVFE07SLxuwlGhf4gRxPsZ+ZPnn8pSoxzJ8lEZbfyZYDqiMvYXulZbRIWrkguaTugNzcpXzoH2j1P42wYUW1NjfalhlWFYJIgxcBGYpihQhyPDv1Lr14NZcBuQdWMo2w4sjjCm7Z68gtsBusjF11vC8ym5ooebt9uzmCTDB/ZykVeR4NBEr9dKMojQSpTsQ3sgezXMrI7MJ3M1E2Ahck/ai/nQ61E+adBnynTIwQwo68vlLZ0wxyhuH/QGWjVDwJ9cMrgTnSDH3mnPOH5g6AJrXfJRCy9HDI88YFOV4z0Cl+j1+syREe/sy6sJ4qBBFOgAEVE5iIB6x5KKEiDjxXrETLlba+QajIplfksiRSnPpfRS1tAmhTseIf1k3wCyBr/UF5W9JOF7fMsl4RiIDSiy4ivFi4GJsSJfMYaldshzSES7W79PD2pF0cGrqTPEcIg3ACBCMA4TPhXZVYxF9tV2C70JaNC0axSsiZxgVRQ1Zwa+9d08WqnGMjd8HykXUo2UUvOUwF1WpfceC81sHjwr5J2YRRe/pZf8d+h6jW6B8gPi/RDogmfewjnE3uweLK7zELnpOzfLjLVnkdI9i037V7THQqOJVQo/h8xzQCCwI7Tn8R5jXX9J3qzIz7AM34jMombunKzxzY7b/A=
+#   template:
+#     type: Opaque
+#     metadata:
+#       name: workorder-login
+#       namespace: tools
 
 ---
 kind: Deployment
@@ -157,40 +69,57 @@ spec:
       imagePullSecrets:
         - name: container-image-registry-credentials
 
----
-kind: Deployment
-apiVersion: apps/v1
-metadata:
-  name: workorder-worker
-  namespace: tools
-  labels:
-    app: workorder-worker
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: workorder-worker
-  strategy:
-    type: Recreate
-  template:
-    metadata:
-      labels:
-        app: workorder-worker
-    spec:
-      containers:
-        - name: workorder-worker
-          image: "container-image-registry.theautomation.nl/tools/workorder-worker:latest@sha256:472edb2ac6de1d9f2119dc0079e0fc4b0f8ea004152dfb949445907bbf981975"
-          imagePullPolicy: Always
-          resources: {}
-          volumeMounts:
-            - name: workorder-worker-data
-              mountPath: /app
-      volumes:
-        - name: workorder-worker-data
-          persistentVolumeClaim:
-            claimName: pvc-nfs-workorder-worker-data
-      imagePullSecrets:
-        - name: container-image-registry-credentials
+# ---
+# kind: Deployment
+# apiVersion: apps/v1
+# metadata:
+#   name: workorder-worker
+#   namespace: tools
+#   labels:
+#     app: workorder-worker
+# spec:
+#   replicas: 1
+#   selector:
+#     matchLabels:
+#       app: workorder-worker
+#   strategy:
+#     type: Recreate
+#   template:
+#     metadata:
+#       labels:
+#         app: workorder-worker
+#     spec:
+#       containers:
+#         - name: workorder-worker
+#           image: "container-image-registry.theautomation.nl/tools/workorder-worker:latest@sha256:472edb2ac6de1d9f2119dc0079e0fc4b0f8ea004152dfb949445907bbf981975"
+#           imagePullPolicy: Always
+#           resources: {}
+#           env:
+#             - name: "WEB_URL"
+#               value: "https://anywhere.united4all.nl"
+#             - name: "WORKORDER_WORDS"
+#               value: "dienst, DEVELOPMENT, Operator, motorkap"
+#             - name: SAVE_IMAGE
+#               value: "false"
+#             - name: "WEB_USERNAME"
+#               valueFrom:
+#                 secretKeyRef:
+#                   name: workorder-login
+#                   key: username
+#             - name: "WEB_PASSWORD"
+#               valueFrom:
+#                 secretKeyRef:
+#                   name: workorder-login
+#                   key: password
+#           volumeMounts:
+#             - name: workorder-worker-data
+#               mountPath: /app
+#       volumes:
+#         - name: workorder-worker-data
+#           persistentVolumeClaim:
+#             claimName: pvc-nfs-workorder-worker-data
+#       imagePullSecrets:
+#         - name: container-image-registry-credentials
 
 ---
 kind: Service
