@@ -212,7 +212,6 @@ spec:
       containers:
         - name: workorder-worker
           image: "container-image-registry.theautomation.nl/tools/workorder-worker:latest@sha256:2ee4667202156c639892f304cc766c51d6808481dd33f3c9c142dd2c8e2597df"
-          imagePullPolicy: Always
           resources: {}
           env:
             - name: "WEB_URL"
@@ -238,6 +237,24 @@ spec:
 kind: Service
 apiVersion: v1
 metadata:
+  name: workorder-mysql
+  namespace: tools
+  labels:
+    app: workorder-mysql
+spec:
+  selector:
+    app: workorder-mysql
+  type: ClusterIP
+  ports:
+    - name: http
+      protocol: TCP
+      port: 3306
+      targetPort: 3306
+
+---
+kind: Service
+apiVersion: v1
+metadata:
   name: workorder-api
   namespace: tools
   labels:
@@ -251,30 +268,6 @@ spec:
       protocol: TCP
       port: 8000
       targetPort: 8000
-
----
-kind: Ingress
-apiVersion: networking.k8s.io/v1
-metadata:
-  name: workorder-mysql
-  namespace: tools
-  labels:
-    app: workorder-mysql
-  annotations:
-    nginx.ingress.kubernetes.io/force-ssl-redirect: "false"
-spec:
-  ingressClassName: nginx-private
-  rules:
-    - host: workorder-mysql.k8s.lan
-      http:
-        paths:
-          - path: "/"
-            pathType: Prefix
-            backend:
-              service:
-                name: workorder-mysql
-                port:
-                  number: 3306
 
 ---
 kind: Ingress

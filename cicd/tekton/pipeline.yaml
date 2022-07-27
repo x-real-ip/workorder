@@ -44,25 +44,25 @@ spec:
         - name: FORMAT
           value: "docker"
 
-    - name: build-push-image-worker
-      taskRef:
-        name: buildah
-      runAfter:
-        - git-clone
-      workspaces:
-        - name: source
-          workspace: shared-data
-      params:
-        - name: IMAGE
-          value: container-image-registry.devops.svc:5000/tools/$(context.pipelineRun.name)-worker:latest
-        - name: DOCKERFILE
-          value: ./deploy/container/Containerfile.worker
-        - name: PUSH_EXTRA_ARGS
-          value: "--creds=${USERNAME}:${PASSWORD}"
-        - name: TLSVERIFY
-          value: "false"
-        - name: FORMAT
-          value: "docker"
+    # - name: build-push-image-worker
+    #   taskRef:
+    #     name: buildah
+    #   runAfter:
+    #     - git-clone
+    #   workspaces:
+    #     - name: source
+    #       workspace: shared-data
+    #   params:
+    #     - name: IMAGE
+    #       value: container-image-registry.devops.svc:5000/tools/$(context.pipelineRun.name)-worker:latest
+    #     - name: DOCKERFILE
+    #       value: ./deploy/container/Containerfile.worker
+    #     - name: PUSH_EXTRA_ARGS
+    #       value: "--creds=${USERNAME}:${PASSWORD}"
+    #     - name: TLSVERIFY
+    #       value: "false"
+    #     - name: FORMAT
+    #       value: "docker"
 
     - name: replace-image-tag-api
       taskRef:
@@ -80,28 +80,28 @@ spec:
         - name: IMAGE_DIGEST
           value: $(tasks.build-push-image-api.results.IMAGE_DIGEST)
 
-    - name: replace-image-tag-worker
-      taskRef:
-        name: replace-image-tag
-      runAfter:
-        - build-push-image-worker
-      workspaces:
-        - name: source
-          workspace: shared-data
-      params:
-        - name: IMAGE_REPO
-          value: tools
-        - name: IMAGE
-          value: $(context.pipelineRun.name)-worker
-        - name: IMAGE_DIGEST
-          value: $(tasks.build-push-image-worker.results.IMAGE_DIGEST)
+    # - name: replace-image-tag-worker
+    #   taskRef:
+    #     name: replace-image-tag
+    #   runAfter:
+    #     - build-push-image-worker
+    #   workspaces:
+    #     - name: source
+    #       workspace: shared-data
+    #   params:
+    #     - name: IMAGE_REPO
+    #       value: tools
+    #     - name: IMAGE
+    #       value: $(context.pipelineRun.name)-worker
+    #     - name: IMAGE_DIGEST
+    #       value: $(tasks.build-push-image-worker.results.IMAGE_DIGEST)
 
     - name: git-push
       taskRef:
         name: git-cli
       runAfter:
         - replace-image-tag-api
-        - replace-image-tag-worker
+        # - replace-image-tag-worker
       workspaces:
         - name: ssh-directory
           workspace: github-ssh
