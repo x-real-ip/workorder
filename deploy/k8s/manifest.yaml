@@ -151,24 +151,24 @@ spec:
           ports:
             - containerPort: 8000
               protocol: TCP
-          # readinessProbe:
-          #   httpGet:
-          #     path: /docs
-          #     port: 8000
-          #     httpHeaders:
-          #       - name: Accept
-          #         value: application/json
-          #   initialDelaySeconds: 10
-          #   periodSeconds: 3
-          # livenessProbe:
-          #   httpGet:
-          #     path: /docs
-          #     port: 8000
-          #     httpHeaders:
-          #       - name: Accept
-          #         value: application/json
-          #   initialDelaySeconds: 10
-          #   periodSeconds: 3
+          readinessProbe:
+            httpGet:
+              path: /docs
+              port: 8000
+              httpHeaders:
+                - name: Accept
+                  value: application/json
+            initialDelaySeconds: 10
+            periodSeconds: 3
+          livenessProbe:
+            httpGet:
+              path: /docs
+              port: 8000
+              httpHeaders:
+                - name: Accept
+                  value: application/json
+            initialDelaySeconds: 10
+            periodSeconds: 20
           env:
             - name: "DATABASE_HOSTNAME"
               value: "workorder-mysql.tools.svc.cluster.local"
