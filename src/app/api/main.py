@@ -1,4 +1,5 @@
 from datetime import date
+import os
 from fastapi import FastAPI, Depends
 from pydantic import BaseModel
 from typing import Optional, List
@@ -7,11 +8,21 @@ from sqlalchemy.orm import declarative_base, sessionmaker, Session
 from sqlalchemy import Column, String, Integer
 import uvicorn
 
+# System ENV variables
+db_host = os.environ.get('DATABASE_HOSTNAME')
+db_port = os.environ.get('DATABASE_PORT')
+db_name = os.environ.get('DATABASE_NAME')
+db_user = os.environ.get('DATABASE_USER')
+db_pass = os.environ.get('DATABASE_PASSWORD')
+
+
 app = FastAPI()
 
 # SqlAlchemy Setup
-SQLALCHEMY_DATABASE_URL = 'sqlite:///../db/database.db'
-engine = create_engine(SQLALCHEMY_DATABASE_URL, echo=True, future=True)
+"mysql+mysqldb://user:password@host/db_name"
+DATABASE_URL = "mysql+mysqldb://" + db_user + ":" + \
+    db_pass + "@" + db_host + ":" + db_port + "/" + db_name
+engine = create_engine(DATABASE_URL)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 Base = declarative_base()
 

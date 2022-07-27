@@ -172,6 +172,8 @@ spec:
           env:
             - name: "DATABASE_HOSTNAME"
               value: "workorder-api.tools.svc.cluster.local"
+            - name: "DATABASE_PORT"
+              value: "3306"
             - name: "DATABASE_NAME"
               value: "workdays"
             - name: "DATABASE_USER"
