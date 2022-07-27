@@ -145,7 +145,7 @@ spec:
     spec:
       containers:
         - name: workorder-api
-          image: "container-image-registry.theautomation.nl/tools/workorder-api:latest@sha256:ece15f1c60c635bad0e8ccbafb6c6a38041a43191278421f19d9e9093de8693e"
+          image: "container-image-registry.theautomation.nl/tools/workorder-api:latest@sha256:a4ef32bc5430a2ef80a0d4a1712dad42653dd3287ccce94d6349835ccb198f2b"
           imagePullPolicy: Always
           resources: {}
           ports:
@@ -211,7 +211,7 @@ spec:
     spec:
       containers:
         - name: workorder-worker
-          image: "container-image-registry.theautomation.nl/tools/workorder-worker:latest@sha256:a6bc6281ac3857f4b4d509d640d8814d5bb635fb4dc0d00ac37ee3b6a7b91399"
+          image: "container-image-registry.theautomation.nl/tools/workorder-worker:latest@sha256:2ee4667202156c639892f304cc766c51d6808481dd33f3c9c142dd2c8e2597df"
           imagePullPolicy: Always
           resources: {}
           env:
