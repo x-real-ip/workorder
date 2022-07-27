@@ -171,7 +171,7 @@ spec:
           #   periodSeconds: 3
           env:
             - name: "DATABASE_HOSTNAME"
-              value: "workorder-api.tools.svc.cluster.local"
+              value: "workorder-mysql.tools.svc.cluster.local"
             - name: "DATABASE_PORT"
               value: "3306"
             - name: "DATABASE_NAME"
@@ -233,24 +233,6 @@ spec:
                   key: password
       imagePullSecrets:
         - name: container-image-registry-credentials
-
----
-kind: Service
-apiVersion: v1
-metadata:
-  name: workorder-mysql
-  namespace: tools
-  labels:
-    app: workorder-mysql
-spec:
-  selector:
-    app: workorder-mysql
-  type: ClusterIP
-  ports:
-    - name: http
-      protocol: TCP
-      port: 3306
-      targetPort: 3306
 
 ---
 kind: Service
