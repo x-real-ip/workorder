@@ -41,10 +41,10 @@ class DBWorkday(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     date = Column(Date)
-    start_time = Column(String(4))
-    end_time = Column(String(4))
-    type = Column(String, nullable=True)
-    location = Column(String, nullable=True)
+    start_time = Column(String(5))
+    end_time = Column(String(5))
+    type = Column(String(100), nullable=True)
+    location = Column(String(30), nullable=True)
 
 
 Base.metadata.create_all(bind=engine)
