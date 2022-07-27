@@ -19,8 +19,7 @@ db_pass = os.environ.get('DATABASE_PASSWORD')
 app = FastAPI()
 
 # SqlAlchemy Setup
-"mysql+mysqldb://user:password@host/db_name"
-DATABASE_URL = "mysql+mysqldb://" + db_user + ":" + \
+DATABASE_URL = "mysql+mysqlconnector://" + db_user + ":" + \
     db_pass + "@" + db_host + ":" + db_port + "/" + db_name
 engine = create_engine(DATABASE_URL)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
