@@ -274,6 +274,30 @@ spec:
 kind: Ingress
 apiVersion: networking.k8s.io/v1
 metadata:
+  name: workorder-mysql
+  namespace: tools
+  labels:
+    app: workorder-mysql
+  annotations:
+    nginx.ingress.kubernetes.io/force-ssl-redirect: "false"
+spec:
+  ingressClassName: nginx-private
+  rules:
+    - host: workorder-mysql.k8s.lan
+      http:
+        paths:
+          - path: "/"
+            pathType: Prefix
+            backend:
+              service:
+                name: workorder-mysql
+                port:
+                  number: 3306
+
+---
+kind: Ingress
+apiVersion: networking.k8s.io/v1
+metadata:
   name: workorder-api
   namespace: tools
   labels:
