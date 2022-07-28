@@ -81,7 +81,7 @@ def create_workday(db: Session, workday: Workday):
 
 
 # Routes for interacting with the API
-@app.post('/workdays/', response_model=Workday)
+@app.post('/workday/', response_model=Workday)
 def create_workdays_view(workday: Workday, db: Session = Depends(get_db)):
     db_workday = create_workday(db, workday)
     return db_workday
